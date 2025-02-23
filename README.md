@@ -28,7 +28,7 @@
 
 ## 6. Wireframes
 
-- **To be completed by:** Abdullah
+- **To be completed by:** Abdullah ☑️
 - **Slide count:** 3 - 6
 
 ## 7. Walkthrough of Main Features
@@ -69,7 +69,7 @@
 
 ### **Wireframes**
 
-🚧 To be completed - Abdullah
+☑️ [Completed](https://www.figma.com/design/YzkYJvuEkQwl0Hl4gUrrz1/WAD-Design-wireframe?node-id=0-1&t=1XySPmPFM7miDASD-1), waiting for final discussion 
 
 ### **User Personas**
 
