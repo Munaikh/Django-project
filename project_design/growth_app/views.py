@@ -1,10 +1,13 @@
+from re import L
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.urls import reverse
 from .models import Business, SalesData, UserProfile
+
 from .forms import (
     RegistrationForm, BusinessForm, SalesDataForm, 
     UserProfileForm, PasswordChangeForm
@@ -41,6 +44,7 @@ def register_view(request):
     """User registration view."""
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        print(form.data)
         if form.is_valid():
             user = form.save()
             # Create a user profile
@@ -165,3 +169,8 @@ def get_sales_data(request, business_id):
         'amounts': [float(item.amount) for item in sales_data]
     }
     return JsonResponse(data)
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('landing_page'))
