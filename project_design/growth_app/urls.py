@@ -6,7 +6,6 @@ urlpatterns = [
     # Public pages
     path('', views.landing_page, name='landing_page'),
     path('about/', views.about_us, name='about_us'),
-    path('contact/', views.contact, name='contact'),
     
     # Authentication
     path('signin/', views.signin_view, name='signin'),

@@ -18,9 +18,6 @@ def about_us(request):
     """About Us page with company information."""
     return render(request, 'growth_app/about_us.html')
 
-def contact(request):
-    """Contact page with company contact information."""
-    return render(request, 'growth_app/contact.html')
 
 def signin_view(request):
     """User login view."""
