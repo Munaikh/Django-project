@@ -11,7 +11,7 @@ urlpatterns = [
     # Authentication
     path('signin/', views.signin_view, name='signin'),
     path('register/', views.register_view, name='register'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', views.user_logout, name='logout'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     
     # User dashboard and settings
