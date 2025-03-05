@@ -2,15 +2,16 @@ from re import L
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from .models import Business, SalesData, UserProfile
 
 from .forms import (
     RegistrationForm, BusinessForm, SalesDataForm, 
-    UserProfileForm, PasswordChangeForm
+    UserProfileForm, PasswordChangeForm, SignInForm
 )
 
 def landing_page(request):
@@ -25,33 +26,30 @@ def contact(request):
     """Contact page with company contact information."""
     return render(request, 'growth_app/contact.html')
 
-def signin_view(request):
-    """User login view."""
-    if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('dashboard')
-    else:
-        form = AuthenticationForm()
-    return render(request, 'growth_app/signin.html', {'form': form})
+class CustomLoginView(LoginView):
+    form_class = SignInForm
+    template_name = 'growth_app/login.html'  # Adjust to your actual template name
+    redirect_authenticated_user = True
+    
+    def get_success_url(self):
+        return reverse_lazy('dashboard')  # Adjust to your dashboard URL name
 
 def register_view(request):
     """User registration view."""
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        print(form.data)
         if form.is_valid():
             user = form.save()
-            # Create a user profile
-            UserProfile.objects.create(user=user)
-            # Log the user in
-            login(request, user)
-            return redirect('dashboard')
+            # Get the raw username and password for authentication
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            # Authenticate and login
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('dashboard')
+        else:
+            print(f"Form errors: {form.errors}")
     else:
         form = RegistrationForm()
     return render(request, 'growth_app/register.html', {'form': form})

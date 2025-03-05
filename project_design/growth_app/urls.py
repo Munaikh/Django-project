@@ -1,6 +1,8 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
-from django.contrib.auth import views as auth_views
+from .views import CustomLoginView
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     # Public pages
@@ -9,9 +11,10 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     
     # Authentication
-    path('signin/', views.signin_view, name='signin'),
+    path('signin/', RedirectView.as_view(pattern_name='login', permanent=True), name='signin'),
     path('register/', views.register_view, name='register'),
-    path('logout/', views.user_logout, name='logout'),
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
     
     # User dashboard and settings
