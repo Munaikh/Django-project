@@ -17,7 +17,7 @@
     <!-- Header -->
      <!-- Navigation -->
     
-     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
          <div class="container">
              <a class="navbar-brand" href="{% url 'landing_page' %}">Growth App</a>
              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -64,122 +64,33 @@
              </div>
          </div>
      </nav>
-    <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <!-- Brand without image, just text with nice font -->
-            <a class="navbar-brand text-white" href="{% url 'landing_page' %}" style="font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 1.5rem;">
-                Growth
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <!-- All navigation items to the far right -->
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'landing_page' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'about_us' %}">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% url 'contact' %}">Contact</a>
-                    </li>
-                    
-                    <!-- Businesses link for all users -->
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{% if user.is_authenticated %}{% url 'businesses_list' %}{% else %}{% url 'sample_businesses' %}{% endif %}">Businesses</a>
-                    </li>
-                    
-                    {% if user.is_authenticated %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'dashboard' %}">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'user_settings' %}">Settings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'logout' %}">Sign Out</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'signin' %}">Sign In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" href="{% url 'register' %}">Register</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </header>
 
     <!-- Main Content -->
     <main>
-        <!-- Main content container -->
-        <div class="container py-4">
-            {% block content %}{% endblock %}
-        </div>
-
-        <!-- Footer with sample charts for non-authenticated users -->
-        {% if not user.is_authenticated %}
-        <footer class="bg-dark text-white py-5 mt-5">
-            <div class="container">
-                <h2 class="mb-4">Business Analytics</h2>
-                
-                <div class="alert alert-secondary">
-                    These are sample charts for major companies. 
-                    <a href="{% url 'register' %}" class="text-dark fw-bold">Register</a> or 
-                    <a href="{% url 'signin' %}" class="text-dark fw-bold">sign in</a> to analyze your own business data.
-                </div>
-                
-                <div class="row">
-                    <!-- Amazon Chart -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Amazon - Current Year Sales</h5>
-                            </div>
-                            <div class="card-body">
-                                <a href="{% url 'signin' %}" class="text-decoration-none">
-                                    <img src="{% static 'growth_app/images/amazon_chart.png' %}" alt="Amazon Sales Chart" class="img-fluid">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Microsoft Chart -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Microsoft - Current Year Sales</h5>
-                            </div>
-                            <div class="card-body">
-                                <a href="{% url 'signin' %}" class="text-decoration-none">
-                                    <img src="{% static 'growth_app/images/microsoft_chart.png' %}" alt="Microsoft Sales Chart" class="img-fluid">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-4">
-                    <p class="text-light">© {% now "Y" %} Growth App. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-        {% else %}
-        <!-- Simple footer for authenticated users -->
-        <footer class="bg-dark text-white py-3 mt-5">
-            <div class="container text-center">
-                <p class="text-light mb-0">© {% now "Y" %} Growth App. All rights reserved.</p>
-            </div>
-        </footer>
-        {% endif %}
+        {% block content %}{% endblock %}
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="logo mb-3">
+                        <img src="{% static 'images/growth-logo.png' %}" alt="Growth" width="40" height="40">
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <h5>Sections</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                        <li><a href="{% url 'businesses_list' %}">Businesses</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                        <li><a href="{% url 'about_us' %}">About Us</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -187,76 +98,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <script src="{% static 'js/main.js' %}"></script>
     {% block scripts %}{% endblock %}
-
-    <!-- Add custom CSS for black and white theme -->
-    <style>
-        :root {
-            --primary-color: #000000;
-            --secondary-color: #333333;
-            --light-color: #f8f9fa;
-            --dark-color: #212529;
-            --border-color: #dee2e6;
-        }
-        
-        body {
-            color: var(--dark-color);
-            background-color: var(--light-color);
-        }
-        
-        .btn-primary {
-            background-color: var(--dark-color);
-            border-color: var(--dark-color);
-        }
-        
-        .btn-primary:hover, .btn-primary:focus {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-        }
-        
-        .btn-outline-primary {
-            color: var(--dark-color);
-            border-color: var(--dark-color);
-        }
-        
-        .btn-outline-primary:hover, .btn-outline-primary:focus {
-            background-color: var(--dark-color);
-            color: white;
-        }
-        
-        .card {
-            border-color: var(--border-color);
-        }
-        
-        .card-header {
-            background-color: rgba(0, 0, 0, 0.03);
-        }
-        
-        .alert-info {
-            color: var(--dark-color);
-            background-color: #e9ecef;
-            border-color: #dee2e6;
-        }
-        
-        footer {
-            background-color: var(--dark-color) !important;
-            color: white !important;
-        }
-        
-        footer p {
-            color: #adb5bd !important;
-        }
-        
-        footer a {
-            color: white !important;
-        }
-        
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
-        
-        .text-muted {
-            color: #6c757d !important;
-        }
-    </style>
 </body>
 </html> 
