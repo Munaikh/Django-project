@@ -501,3 +501,32 @@ def add_business_csv(request):
         return redirect('business_analytics', business_id=business.id)
     
     return render(request, 'growth_app/add_business_csv.html')
+
+
+def sample_businesses_view(request):
+    """View for displaying sample businesses to non-authenticated users."""
+    # You can add sample business data here
+    sample_businesses = [
+        {
+            'name': 'Amazon',
+            'type': 'E-commerce',
+            'description': 'Global online marketplace',
+            'chart_image': 'growth_app/images/amazon_chart.png'
+        },
+        {
+            'name': 'Microsoft',
+            'type': 'Technology',
+            'description': 'Software and cloud services provider',
+            'chart_image': 'growth_app/images/microsoft_chart.png'
+        },
+        {
+            'name': 'Tesla',
+            'type': 'Automotive & Energy',
+            'description': 'Electric vehicles and clean energy',
+            'chart_image': 'growth_app/images/tesla_chart.png'
+        }
+    ]
+    
+    return render(request, 'growth_app/sample_businesses.html', {
+        'sample_businesses': sample_businesses
+    })
