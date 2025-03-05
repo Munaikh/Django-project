@@ -9,6 +9,7 @@ urlpatterns = [
     
     # Authentication
     path('signin/', views.signin_view, name='signin'),
+    path('login/', views.signin_view, name='login'),
     path('register/', views.register_view, name='register'),
     path('logout/', views.user_logout, name='logout'),
     path('forgot-password/', views.forgot_password, name='forgot_password'),
@@ -29,4 +30,13 @@ urlpatterns = [
     
     # AJAX endpoints
     path('api/sales-data/<int:business_id>/', views.get_sales_data, name='get_sales_data'),
+    
+    # Add this to your urlpatterns
+    path('delete-account/', views.delete_account, name='delete_account'),
+    
+    # Add these to your urlpatterns
+    path('businesses/public/', views.public_businesses, name='public_businesses'),
+    path('businesses/<int:business_id>/upload-csv/', views.upload_csv, name='upload_csv'),
+    path('businesses/<int:business_id>/analytics/', views.business_analytics, name='business_analytics'),
+    path('businesses/add-csv/', views.add_business_csv, name='add_business_csv'),
 ] 
