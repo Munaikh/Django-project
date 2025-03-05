@@ -1,0 +1,17 @@
+{% extends 'growth_app/base.html' %}
+{% block title %}Business - Growth{% endblock %}
+
+{% block content %}
+<div>
+    {% if businesses %}
+    <ul>
+        {% for business in businesses %}
+            <li><a href="{% url 'growth_app:business_detail' business.id %}">{{ business.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <strong>There are no businesses.</strong>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -85,10 +85,9 @@ def user_settings(request):
         'password_form': password_form
     })
 
-@login_required
 def businesses_list(request):
     """List of all businesses belonging to the user."""
-    businesses = Business.objects.filter(owner=request.user)
+    businesses = Business.objects.all()
     return render(request, 'growth_app/businesses_list.html', {'businesses': businesses})
 
 @login_required
@@ -105,10 +104,9 @@ def add_business(request):
         form = BusinessForm()
     return render(request, 'growth_app/add_business.html', {'form': form})
 
-@login_required
 def business_detail(request, business_id):
     """Detail view for a specific business."""
-    business = get_object_or_404(Business, id=business_id, owner=request.user)
+    business = get_object_or_404(Business, id=business_id)
     sales_data = SalesData.objects.filter(business=business)
     return render(request, 'growth_app/business_detail.html', {
         'business': business, 
