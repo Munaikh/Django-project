@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from growth_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('growth_app.urls')),
+    path('sample-businesses/', views.sample_businesses_view, name='sample_businesses'),
 ]
 
 # Serve media files in development
