@@ -32,3 +32,26 @@ function createChart(canvasId, labels, data, label, color) {
         }
     });
 } 
+
+// FAQ show/hide answers
+function toggleFAQ(button) {
+    const faqObject = button.parentElement;
+    const answer = button.parentElement.querySelector('.FAQ_answer');
+    const image = button.querySelector('img');
+
+    const upArrow = "/static/images/upwardarrow.png"; 
+    const downArrow = "/static/images/downarrow.png"; 
+
+    if (getComputedStyle(answer).display === 'none') {
+        answer.style.display = 'block';
+        faqObject.style.background = 'white';
+        image.src = upArrow;
+        image.alt = "Up arrow";
+    } else {
+        answer.style.display = 'none';
+        faqObject.style.background = '#E8E8E8';
+        image.src = downArrow;
+        image.alt = "Down arrow";
+    }
+}
+    
