@@ -107,14 +107,14 @@ main {
 }
 
 /* FAQ Section */
-.FAQ_div {
+.FAQ-div {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 /* FAQ each question */
-.FAQ_object {
+.FAQ-object {
     display: flex; 
     border: 2px solid #C0C0C0; 
     background-color: #E8E8E8; 
@@ -129,25 +129,25 @@ main {
 }
 
 /* FAQ question & answer */
-.FAQ_content {
+.FAQ-content {
     flex: 1; 
 }
 
 /* FAQ question */
-.FAQ_question {
+.FAQ-question {
     padding: 5px;
     text-align: left;
 }
 
 /* FAQ default hide answer */
-.FAQ_answer {
+.FAQ-answer {
     padding: 5px;
     display: none; 
     text-align: left;
 }
 
 /* FAQ dropdown button */
-.toggle_FAQ_btn {
+.toggle-FAQ-btn {
     background-color: inherit;
     border: none;
     padding: 10px;

@@ -36,7 +36,7 @@ function createChart(canvasId, labels, data, label, color) {
 // FAQ show/hide answers
 function toggleFAQ(button) {
     const faqObject = button.parentElement;
-    const answer = button.parentElement.querySelector('.FAQ_answer');
+    const answer = button.parentElement.querySelector('.FAQ-answer');
     const image = button.querySelector('img');
 
     const upArrow = "/static/images/upwardarrow.png"; 
