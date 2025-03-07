@@ -1,0 +1,76 @@
+{% extends 'growth_app/base.html' %}
+
+{% block title %}Add Business with CSV - Growth App{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3><i class="fas fa-file-csv"></i> Add Business with CSV</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <h5>Step 1: Business Information</h5>
+                            <div class="mb-3">
+                                <label for="id_name" class="form-label">Business Name</label>
+                                <input type="text" name="name" id="id_name" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_type" class="form-label">Business Type</label>
+                                <select name="type" id="id_type" class="form-select">
+                                    <option value="Retail">Retail</option>
+                                    <option value="Service">Service</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Food">Food & Beverage</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_description" class="form-label">Description</label>
+                                <textarea name="description" id="id_description" class="form-control" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="id_logo" class="form-label">Logo (Optional)</label>
+                                <input type="file" name="logo" id="id_logo" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Step 2: Upload Sales Data</h5>
+                            <div class="mb-3">
+                                <label for="id_csv_file" class="form-label">CSV File</label>
+                                <input type="file" name="csv_file" id="id_csv_file" class="form-control" accept=".csv" required>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle"></i> CSV Format</h6>
+                                <p class="mb-2">Your CSV file should have the following format:</p>
+                                <ul>
+                                    <li>Column 1: Date (YYYY-MM-DD)</li>
+                                    <li>Column 2: Amount (numeric)</li>
+                                </ul>
+                                <p class="mb-0">Example: <code>2023-01-15,1250.50</code></p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-upload"></i> Create Business & Upload Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

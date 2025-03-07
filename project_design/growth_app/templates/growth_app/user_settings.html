@@ -1,0 +1,185 @@
+{% extends 'growth_app/base.html' %}
+
+{% block title %}Account Settings - Growth App{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Account Settings</h2>
+    
+    <div class="row">
+        <!-- Profile Settings -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="update_profile" value="1">
+                        
+                        {% if profile_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in profile_form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ profile_form.first_name.id_for_label }}">First Name</label>
+                            {{ profile_form.first_name }}
+                            {% if profile_form.first_name.errors %}
+                            <div class="text-danger">
+                                {% for error in profile_form.first_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ profile_form.last_name.id_for_label }}">Last Name</label>
+                            {{ profile_form.last_name }}
+                            {% if profile_form.last_name.errors %}
+                            <div class="text-danger">
+                                {% for error in profile_form.last_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ profile_form.email.id_for_label }}">Email</label>
+                            {{ profile_form.email }}
+                            {% if profile_form.email.errors %}
+                            <div class="text-danger">
+                                {% for error in profile_form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ profile_form.profile_pic.id_for_label }}">Profile Picture</label>
+                            {{ profile_form.profile_pic }}
+                            {% if profile_form.profile_pic.errors %}
+                            <div class="text-danger">
+                                {% for error in profile_form.profile_pic.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Password Change -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Change Password</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="change_password" value="1">
+                        
+                        {% if password_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in password_form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.old_password.id_for_label }}">Current Password</label>
+                            {{ password_form.old_password }}
+                            {% if password_form.old_password.errors %}
+                            <div class="text-danger">
+                                {% for error in password_form.old_password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.new_password1.id_for_label }}">New Password</label>
+                            {{ password_form.new_password1 }}
+                            {% if password_form.new_password1.errors %}
+                            <div class="text-danger">
+                                {% for error in password_form.new_password1.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ password_form.new_password1.help_text }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ password_form.new_password2.id_for_label }}">Confirm New Password</label>
+                            {{ password_form.new_password2 }}
+                            {% if password_form.new_password2.errors %}
+                            <div class="text-danger">
+                                {% for error in password_form.new_password2.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Account Danger Zone -->
+    <div class="mt-5">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4>Danger Zone</h4>
+            </div>
+            <div class="card-body">
+                <h5>Delete Account</h5>
+                <p>Once you delete your account, there is no going back. Please be certain.</p>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                    Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Account Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                <p>All your data, including businesses and sales records, will be permanently deleted.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="{% url 'delete_account' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete My Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

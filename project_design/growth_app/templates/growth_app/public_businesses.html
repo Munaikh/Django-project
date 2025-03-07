@@ -1,0 +1,77 @@
+{% extends 'growth_app/base.html' %}
+
+{% block title %}Business Analytics - Growth App{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="mb-4">Business Analytics</h2>
+    
+    {% if user.is_authenticated %}
+        <div class="alert alert-info">
+            <p>You're logged in! <a href="{% url 'businesses_list' %}" class="alert-link">View your businesses</a> or <a href="{% url 'add_business' %}" class="alert-link">add a new business</a>.</p>
+        </div>
+    {% else %}
+        <div class="alert alert-primary">
+            <p>These are sample charts for major companies. <a href="{% url 'register' %}" class="alert-link">Register</a> or <a href="{% url 'signin' %}" class="alert-link">sign in</a> to analyze your own business data.</p>
+        </div>
+    {% endif %}
+    
+    <div class="row">
+        {% for company in companies %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4>{{ company.name }} - Current Year Sales</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="chart-{{ forloop.counter }}" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for company in companies %}
+        new Chart(document.getElementById('chart-{{ forloop.counter }}').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: {{ company.data.months|safe }},
+                datasets: [{
+                    label: '{{ company.name }} Sales',
+                    data: {{ company.data.sales|safe }},
+                    borderColor: 'rgba({{ forloop.counter|add:50 }}, {{ forloop.counter|add:100 }}, {{ forloop.counter|add:150 }}, 1)',
+                    backgroundColor: 'rgba({{ forloop.counter|add:50 }}, {{ forloop.counter|add:100 }}, {{ forloop.counter|add:150 }}, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Revenue ($ millions)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
+                    }
+                }
+            }
+        });
+        {% endfor %}
+    });
+</script>
+{% endblock %} 

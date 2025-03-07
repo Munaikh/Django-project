@@ -1,0 +1,35 @@
+{% extends 'growth_app/base.html' %}
+
+{% load static %}
+
+{% block title %}Sample Businesses - Growth{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Sample Businesses</h1>
+    
+    <div class="alert alert-info mb-4">
+        <p class="mb-0">These are sample businesses with example data. <a href="{% url 'register' %}">Register</a> or <a href="{% url 'signin' %}">sign in</a> to create and analyze your own businesses.</p>
+    </div>
+    
+    <div class="row">
+        {% for business in sample_businesses %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">{{ business.name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="badge bg-secondary mb-2">{{ business.type }}</p>
+                    <p class="card-text">{{ business.description }}</p>
+                    <img src="{% static business.chart_image %}" alt="{{ business.name }} Chart" class="img-fluid mt-3">
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'signin' %}" class="btn btn-primary">Sign in to view details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 
