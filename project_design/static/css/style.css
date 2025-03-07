@@ -1,5 +1,8 @@
 /* Base Styles */
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
     color: #212529;
@@ -18,6 +21,11 @@ header {
 /* Footer */
 footer {
     border-top: 1px solid #e9ecef;
+}
+
+/* Main */
+main {
+    flex:1;
 }
 
 /* Buttons */
@@ -51,3 +59,96 @@ footer {
 .business-item:hover {
     transform: translateY(-5px);
 } 
+
+/* About page */
+/* Main section */
+.about-div {
+    display:flex;
+    width: 80%;
+    max-width: 1800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 50px;
+    margin-bottom: 50px;
+}
+
+.about-text {
+    padding-right: 50px;
+    margin-right: 50px;
+}
+
+
+/* Contact section */
+.contact-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center; 
+    padding-bottom: 50px;
+}
+
+/* Contact external-hyperlinks*/
+.contact-links {
+    border: 2px solid #C0C0C0; 
+    border-radius: 10px; 
+    background-color: #E8E8E8; 
+    padding: 10px;
+    margin: 10px 0;
+}
+
+/* contact list */
+.contact-links ul {
+    display: flex;
+    gap: 20px; 
+    padding: 0;
+    margin: 0; 
+    list-style: none; 
+    justify-content: center;
+}
+
+/* FAQ Section */
+.FAQ-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* FAQ each question */
+.FAQ-object {
+    display: flex; 
+    border: 2px solid #C0C0C0; 
+    background-color: #E8E8E8; 
+    padding: 5px;
+    margin: 10px 0;
+    align-items: flex-start; 
+    width: 90%; 
+    max-width: 900px; 
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px; 
+}
+
+/* FAQ question & answer */
+.FAQ-content {
+    flex: 1; 
+}
+
+/* FAQ question */
+.FAQ-question {
+    padding: 5px;
+    text-align: left;
+}
+
+/* FAQ default hide answer */
+.FAQ-answer {
+    padding: 5px;
+    display: none; 
+    text-align: left;
+}
+
+/* FAQ dropdown button */
+.toggle-FAQ-btn {
+    background-color: inherit;
+    border: none;
+    padding: 10px;
+}

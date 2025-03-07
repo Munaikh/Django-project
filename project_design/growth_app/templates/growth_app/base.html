@@ -15,55 +15,41 @@
 </head>
 <body>
     <!-- Header -->
-     <!-- Navigation -->
-    
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-         <div class="container">
-             <a class="navbar-brand" href="{% url 'landing_page' %}">Growth App</a>
-             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                 <span class="navbar-toggler-icon"></span>
-             </button>
-             <div class="collapse navbar-collapse" id="navbarNav">
-                 <ul class="navbar-nav me-auto">
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'landing_page' %}">Home</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'about_us' %}">About</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'contact' %}">Contact</a>
-                     </li>
-                 </ul>
-                 <ul class="navbar-nav">
-                     {% if user.is_authenticated %}
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'user_settings' %}">Settings</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'businesses_list' %}">Businesses</a>
-                     </li>
-                     {% else %}
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'signin' %}">Sign In</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'register' %}">Register</a>
-                     </li>
-                     <li class="nav-item">
-                         <a class="nav-link" href="{% url 'public_businesses' %}">Businesses</a>
-                     </li>
-                     {% endif %}
-                 </ul>
-             </div>
-         </div>
-     </nav>
+    <header class="bg-dark shadow-sm">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <div class="logo d-flex align-items-center">
+                    <a href="{% url 'landing_page' %}"><img src="{% static 'images/growth-logo.png' %}" alt="Growth" width="40" height="40"></a>
+                </div>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link text-white">Dashboard</a></li>
+                        <li class="nav-item"><a href="{% url 'businesses_list' %}" class="nav-link text-white">Businesses</a></li>
+                        <li class="nav-item"><a href="{% url 'about_us' %}" class="nav-link text-white">About Us</a></li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                                    {% if user.profile.profile_pic %}
+                                        <img src="{{ user.profile.profile_pic.url }}" alt="Profile" class="rounded-circle" width="30" height="30">
+                                    {% else %}
+                                        <img src="{% static 'images/default-profile.png' %}" alt="Profile" class="rounded-circle" width="30" height="30">
+                                    {% endif %}
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="{% url 'user_settings' %}">Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="nav-item"><a href="{% url 'signin' %}" class="nav-link text-white">Sign In</a></li>
+                            <li class="nav-item"><a href="{% url 'register' %}" class="nav-link text-white">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
     <!-- Main Content -->
     <main>
@@ -71,7 +57,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white mt-5 py-4">
+    <footer class="bg-dark mt-5 py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -80,12 +66,11 @@
                     </div>
                 </div>
                 <div class="col-md-9">
-                    <h5>Sections</h5>
+                    <h5 class="text-white">Sections</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                        <li><a href="{% url 'businesses_list' %}">Businesses</a></li>
-                        <li><a href="{% url 'contact' %}">Contact</a></li>
-                        <li><a href="{% url 'about_us' %}">About Us</a></li>
+                        <li><a href="{% url 'dashboard' %}" class="text-white">Dashboard</a></li>
+                        <li><a href="{% url 'businesses_list' %}" class="text-white">Businesses</a></li>
+                        <li><a href="{% url 'about_us' %}" class="text-white">About Us</a></li>
                     </ul>
                 </div>
             </div>

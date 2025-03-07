@@ -92,21 +92,16 @@ class SalesDataForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'type': 'date'}),
         }
 
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
 class UserProfileForm(forms.ModelForm):
-    first_name = forms.CharField(
-        max_length=30, 
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    last_name = forms.CharField(
-        max_length=30, 
-        required=False,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
-    )
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={'class': 'form-control'})
-    )
+    name = forms.CharField(max_length=30, required=False)
+    email = forms.EmailField(required=True)
     
     class Meta:
         model = UserProfile
@@ -118,15 +113,13 @@ class UserProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.user:
-            self.fields['first_name'].initial = self.instance.user.first_name
-            self.fields['last_name'].initial = self.instance.user.last_name
+            self.fields['name'].initial = self.instance.user.name
             self.fields['email'].initial = self.instance.user.email
     
     def save(self, commit=True):
         profile = super().save(commit=False)
         user = profile.user
-        user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+        user.name = self.cleaned_data['first_name']
         user.email = self.cleaned_data['email']
         user.save()
         

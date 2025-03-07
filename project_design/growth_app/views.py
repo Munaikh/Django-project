@@ -26,10 +26,6 @@ def about_us(request):
     return render(request, "growth_app/about_us.html")
 
 
-def contact(request):
-    """Contact page with company contact information."""
-    return render(request, "growth_app/contact.html")
-
 
 def signin_view(request):
     """User login view."""
@@ -110,13 +106,11 @@ def user_settings(request):
     )
 
 
-@login_required
 def businesses_list(request):
     """List of all businesses belonging to the user."""
-    businesses = Business.objects.filter(owner=request.user)
-    return render(
-        request, "growth_app/businesses_list.html", {"businesses": businesses}
-    )
+    # TODO: businesses = Business.objects.filter(owner=request.user)
+    businesses = Business.objects.all()
+    return render(request, 'growth_app/businesses_list.html', {'businesses': businesses})
 
 
 @login_required
@@ -134,10 +128,9 @@ def add_business(request):
     return render(request, "growth_app/add_business.html", {"form": form})
 
 
-@login_required
 def business_detail(request, business_id):
     """Detail view for a specific business."""
-    business = get_object_or_404(Business, id=business_id, owner=request.user)
+    business = get_object_or_404(Business, id=business_id)
     sales_data = SalesData.objects.filter(business=business)
     return render(
         request,
