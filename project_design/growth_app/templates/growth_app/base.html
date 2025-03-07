@@ -31,32 +31,29 @@
     <header class="bg-dark shadow-sm">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-between py-3">
-                <a href="{% url 'about_us' %}" class="d-flex align-items-center text-white text-decoration-none">
+                <a href="{% url 'landing_page' %}" class="d-flex align-items-center text-white text-decoration-none">
                     <img src="{% static 'images/growth-logo.png' %}" alt="Growth" width="40" height="40" class="me-2">
                     <span class="fs-4">Growth</span>
                 </a>
                 <nav>
                     <ul class="nav">
-                        {% if user.is_authenticated %}
-                            <li class="nav-item"><a href="{% url 'businesses_list' %}" class="nav-link text-white">Businesses</a></li>
-                        {% else %}
-                            <li class="nav-item"><a href="{% url 'signin' %}" class="nav-link text-white">Businesses</a></li>
-                        {% endif %}
+                        <li class="nav-item"><a href="{% url 'dashboard' %}" class="nav-link text-white">Dashboard</a></li>
+                        <li class="nav-item"><a href="{% url 'businesses_list' %}" class="nav-link text-white">Businesses</a></li>
                         <li class="nav-item"><a href="{% url 'about_us' %}" class="nav-link text-white">About Us</a></li>
                         {% if user.is_authenticated %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
                                     {% if user.profile.profile_pic %}
                                         <img src="{{ user.profile.profile_pic.url }}" alt="Profile" class="rounded-circle" width="30" height="30">
                                     {% else %}
                                         <img src="{% static 'images/default-profile.png' %}" alt="Profile" class="rounded-circle" width="30" height="30">
                                     {% endif %}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="{% url 'user_settings' %}">Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-                                </ul>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="{% url 'user_settings' %}">Settings</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                </div>
                             </li>
                         {% else %}
                             <li class="nav-item"><a href="{% url 'signin' %}" class="nav-link text-white">Sign In</a></li>
