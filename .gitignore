@@ -169,4 +169,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-project_design/media/business_logos/*.jpg
+project_design/media/business_logos/*
