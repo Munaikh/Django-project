@@ -1,88 +1,107 @@
-# Django Project Overview
+# Growth - Business Analytics Platform
 
-## 1. Overview of the Application
+## Project Overview
 
-- **To be completed by:** Aaron
-- **Slide count:** 1
+Growth is a Django-based web application designed to help small and medium-sized businesses track, analyze, and predict their sales data. The platform provides intuitive visualization tools, data-driven insights, and forecasting capabilities to support business decision-making.
 
-## 2. User Personas
+## Features
 
-- **To be completed by:** Aaron
-- **Slide count:** Around 3
+- **User Authentication**: Secure login, registration, and account management
+- **Business Management**: Create and manage multiple business profiles
+- **Data Upload**: Import sales data through CSV files
+- **Interactive Analytics**: Visualize sales trends with dynamic charts
+- **Sales Forecasting**: AI-powered sales predictions using linear regression
+- **Responsive Design**: Mobile-friendly interface using Bootstrap 5
 
-## 3. Specification (Minimal List of Requirements)
+## Technology Stack
 
-- **To be completed by:** Ahmed
-- **Slide count:** 1
+- **Backend**: Django 5.1.7
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
+- **Data Analysis**: NumPy, Pandas, scikit-learn
+- **Visualization**: Chart.js
 
-## 4. High-Level System Architecture Diagram
-
-- **To be completed by:** Jon
-- **Slide count:** 1
-
-## 5. ER Diagram
-
-- **Completed by:** Arnav ✅
-- **Slide count:** 1
-- **Details:** Must be in compressed Chen notation, including attribute descriptions with data types
-
-## 6. Wireframes
-
-- **To be completed by:** Abdullah ☑️
-- **Slide count:** 3 - 6
-
-## 7. Walkthrough of Main Features
-
-- **Slide count:** 2
-
-### **Site URLs**
+## Repository Structure
 
 ```
-/Landing Page
-  - Login Page
-  - Register Page
-/Home Dashboard
-/User Settings
-  - Profile Settings
-  - Security Settings
-/Company List (Choose to add/delete/edit a few + View Sales)
-  - (After you choose a company)
-    - Prediction
-      - Generate Prediction
-      - Prediction History
-    - Sales Analysis
-      - New Analysis
-      - Analysis History
+project_design/
+├── growth_project/          # Django project settings
+├── growth_app/              # Main application
+│   ├── migrations/          # Database migrations
+│   ├── templates/           # HTML templates
+│   ├── models.py            # Data models
+│   ├── views.py             # View controllers
+│   ├── forms.py             # Form definitions
+│   └── urls.py              # URL routing
+├── static/                  # Static files (CSS, JS, images)
+├── media/                   # User-uploaded content
+├── manage.py                # Django management script
+└── requirements.txt         # Python dependencies
 ```
 
-### **Site Map**
+## Branching Structure
 
-✅ Completed
+Our repository follows the following branches:
 
-### **ER Diagram**
+- **main**: Production-ready code
+- **design**:Designing the project interface
+- **feature**: Feature-specific branches (e.g., user authentication)
+## Setup Instructions
 
-✅ Completed
+### Prerequisites
 
-### **System Architecture**
+- Python 3.8 or higher
+- pip (Python package installer)
+- Virtual environment tool (recommended)
 
-🚧 To be completed - Jon
+### Installation Steps
 
-### **Wireframes**
+1. **Clone the repository**
 
-☑️ [Completed](https://www.figma.com/design/YzkYJvuEkQwl0Hl4gUrrz1/WAD-Design-wireframe?node-id=0-1&t=1XySPmPFM7miDASD-1), waiting for final discussion 
+   ```bash
+   git clone https://github.com/Munaikh/Django-project.git
+   cd Django-project
+   ```
 
-### **User Personas**
+2. **Install dependencies**
 
-🚧 To be completed - Aaron
+   ```bash
+   pip install -r project_design/requirements.txt
+   ```
 
-### **Requirements**
+3. **Apply migrations**
 
-🚧 To be completed - Ahmed
+   ```bash
+   cd project_design
+   python manage.py migrate
+   ```
 
-### **Overview**
+4. **Create a superuser** (optional)
 
-🚧 To be completed - Aaron
+   ```bash
+   python manage.py createsuperuser
+   ```
 
-### **Presentation**
+5. **Run the development server**
 
-🚧 To be completed - Whole Group
+   ```bash
+   python manage.py runserver
+   ```
+
+6. **Access the application**
+   Open your browser and navigate to `http://127.0.0.1:8000/`
+
+### Populating Sample Data (Optional)
+
+To populate the database with sample businesses and sales data:
+
+```bash
+python population_script.py
+```
+
+
+## Acknowledgements
+
+- Django framework and community
+- Bootstrap 5 for frontend components
+- Chart.js for data visualization
+- scikit-learn for machine learning capabilities
