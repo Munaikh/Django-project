@@ -86,7 +86,8 @@
                         {% if user.is_authenticated %}
                             <li><a href="{% url 'businesses_list' %}" class="text-white">Businesses</a></li>
                         {% else %}
-                            <li><a href="{% url 'signin' %}" class="text-white">Businesses</a></li>
+                            <li><a href="{% url 'signin' %}" class="text-white">Sign In</a></li>
+                            <li><a href="{% url 'register' %}" class="text-white">Register</a></li>
                         {% endif %}
                         <li><a href="{% url 'about_us' %}" class="text-white">About Us</a></li>
                     </ul>

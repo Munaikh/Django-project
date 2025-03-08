@@ -28,6 +28,24 @@ main {
     flex:1;
 }
 
+.cards {
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+.cards .mr-3 {
+    margin-right: 10px;
+}
+
+.landing-images{
+    display: flex;
+    flex-direction: row;
+    gap:50px;
+}
+
+
 /* Buttons */
 .btn-dark {
     background-color: #212529;
