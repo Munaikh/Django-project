@@ -129,6 +129,7 @@
     {% endif %}
 </div>
 
+{% if not no_data %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Data from Django
@@ -270,4 +271,5 @@
         });
     });
 </script>
+{% endif %}
 {% endblock %} 

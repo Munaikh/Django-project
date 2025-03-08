@@ -150,10 +150,10 @@ def user_settings(request):
     )
 
 
+@login_required
 def businesses_list(request):
     """List of all businesses belonging to the user."""
-    # TODO: businesses = Business.objects.filter(owner=request.user)
-    businesses = Business.objects.all()
+    businesses = Business.objects.filter(owner=request.user)
     return render(request, 'growth_app/businesses_list.html', {'businesses': businesses})
 
 
@@ -439,69 +439,77 @@ def business_analytics(request, business_id):
 
 @login_required
 def upload_csv(request, business_id):
-    """Upload and process CSV file with sales data."""
+    """Upload CSV sales data for a business."""
     business = get_object_or_404(Business, id=business_id, owner=request.user)
     
-    if request.method == 'POST' and request.FILES.get('csv_file'):
-        csv_file = request.FILES['csv_file']
-        
-        # Check if it's a CSV file
-        if not csv_file.name.endswith('.csv'):
-            messages.error(request, 'Please upload a CSV file.')
-            return redirect('business_analytics', business_id=business_id)
-        
-        # Process the file
-        try:
-            import csv
-            from io import StringIO
-            import datetime
+    if request.method == 'POST':
+        form = SalesDataForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['file']
             
-            # Read the CSV file
-            decoded_file = csv_file.read().decode('utf-8')
-            csv_data = csv.reader(StringIO(decoded_file), delimiter=',')
+            # Check if file is CSV
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request, 'Please upload a CSV file.')
+                return redirect('upload_csv', business_id=business_id)
             
-            # Skip header row if it exists
-            header = next(csv_data, None)
-            
-            # Check if the file has the correct format
-            if not header or len(header) < 2:
-                messages.error(request, 'CSV file must have at least two columns: Date and Amount.')
-                return redirect('business_analytics', business_id=business_id)
-            
-            # Process each row
-            sales_data_objects = []
-            for row in csv_data:
-                if len(row) >= 2:
+            # Process CSV file
+            try:
+                decoded_file = csv_file.read().decode('utf-8').splitlines()
+                reader = csv.DictReader(decoded_file)
+                
+                # Validate CSV structure
+                required_fields = ['Date', 'Amount']
+                if not all(field in reader.fieldnames for field in required_fields):
+                    messages.error(request, 'CSV file must contain Date and Amount columns.')
+                    return redirect('upload_csv', business_id=business_id)
+                
+                # Delete existing data if replace option is selected
+                if form.cleaned_data.get('replace_existing'):
+                    SalesData.objects.filter(business=business).delete()
+                
+                # Import data
+                for row in reader:
                     try:
-                        # Parse date (assuming YYYY-MM-DD format)
-                        date_str = row[0].strip()
-                        date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+                        date_str = row['Date'].strip()
+                        amount_str = row['Amount'].strip()
                         
-                        # Parse amount
-                        amount = float(row[1].strip())
+                        # Parse date (support multiple formats)
+                        try:
+                            # Try YYYY-MM-DD format
+                            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+                        except ValueError:
+                            try:
+                                # Try MM/DD/YYYY format
+                                date_obj = datetime.strptime(date_str, '%m/%d/%Y').date()
+                            except ValueError:
+                                # Try DD/MM/YYYY format
+                                date_obj = datetime.strptime(date_str, '%d/%m/%Y').date()
                         
-                        # Create SalesData object
-                        sales_data = SalesData(
+                        # Parse amount (remove currency symbols and commas)
+                        amount = float(amount_str.replace('$', '').replace('£', '').replace(',', ''))
+                        
+                        # Create sales data record
+                        SalesData.objects.create(
                             business=business,
                             date=date_obj,
                             amount=amount
                         )
-                        sales_data_objects.append(sales_data)
-                    except (ValueError, IndexError) as e:
-                        # Skip invalid rows
-                        continue
-            
-            # Bulk create all valid sales data objects
-            if sales_data_objects:
-                SalesData.objects.bulk_create(sales_data_objects)
-                messages.success(request, f'Successfully imported {len(sales_data_objects)} sales records.')
-            else:
-                messages.warning(request, 'No valid sales data found in the CSV file.')
+                    except Exception as e:
+                        messages.warning(request, f'Error in row: {row}. {str(e)}')
                 
-        except Exception as e:
-            messages.error(request, f'Error processing CSV file: {str(e)}')
+                messages.success(request, 'Sales data imported successfully.')
+                return redirect('business_analytics', business_id=business_id)
+                
+            except Exception as e:
+                messages.error(request, f'Error processing CSV file: {str(e)}')
+                return redirect('upload_csv', business_id=business_id)
+    else:
+        form = SalesDataForm()
     
-    return redirect('business_analytics', business_id=business_id)
+    return render(request, 'growth_app/upload_csv.html', {
+        'form': form,
+        'business': business
+    })
 
 
 @login_required
