@@ -104,9 +104,12 @@ class SignInForm(AuthenticationForm):
 class BusinessForm(forms.ModelForm):
     class Meta:
         model = Business
-        fields = ["name", "description", "type", "logo"]
+        fields = ['name', 'type', 'description', 'logo']
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 4}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'logo': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
 

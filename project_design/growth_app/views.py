@@ -4,6 +4,15 @@ from django.contrib.auth import login, authenticate, logout, update_session_auth
 from django.http import JsonResponse
 from django.urls import reverse
 from django.contrib import messages
+import csv
+import os
+import json
+from datetime import datetime, timedelta
+from django.conf import settings
+import pandas as pd
+import numpy as np
+from django.db.models import Q, Sum
+from sklearn.linear_model import LinearRegression
 
 from growth_app.models import Business, SalesData
 from growth_app.forms import (
@@ -73,8 +82,43 @@ def forgot_password(request):
 @login_required
 def dashboard(request):
     """User dashboard with overview of businesses and sales data."""
-    businesses = Business.objects.filter(owner=request.user)
-    return render(request, "growth_app/dashboard.html", {"businesses": businesses})
+    businesses = Business.objects.filter(owner=request.user).order_by('-created_at')
+    
+    # Get total number of businesses
+    business_count = businesses.count()
+    
+    # Get total sales across all businesses
+    total_sales = SalesData.objects.filter(business__owner=request.user).aggregate(Sum('amount'))['amount__sum'] or 0
+    
+    # Get recent sales data - make sure they're not in the future
+    today = datetime.now().date()
+    recent_sales = SalesData.objects.filter(
+        business__owner=request.user,
+        date__lte=today  # Only include sales with dates up to today
+    ).order_by('-date')[:5]
+    
+    # Get last updated date (most recent sale or business creation)
+    last_sale = recent_sales.first()
+    last_business = businesses.first()
+    
+    if last_sale and last_business:
+        last_updated = max(last_sale.date, last_business.created_at.date())
+    elif last_sale:
+        last_updated = last_sale.date
+    elif last_business:
+        last_updated = last_business.created_at.date()
+    else:
+        last_updated = today
+    
+    context = {
+        "businesses": businesses,
+        "business_count": business_count,
+        "total_sales": total_sales,
+        "recent_sales": recent_sales,
+        "last_updated": last_updated
+    }
+    
+    return render(request, "growth_app/dashboard.html", context)
 
 
 @login_required
@@ -261,93 +305,136 @@ def business_analytics(request, business_id):
     business = get_object_or_404(Business, id=business_id, owner=request.user)
     sales_data = SalesData.objects.filter(business=business).order_by('date')
     
-    if not sales_data:
+    # Check if there's any sales data
+    if not sales_data.exists():
         return render(request, 'growth_app/business_analytics.html', {
             'business': business,
-            'sales_data': None
+            'no_data': True
         })
     
     # Calculate summary statistics
-    total_sales = sum(float(item.amount) for item in sales_data)
-    avg_monthly = total_sales / max(1, len(sales_data.dates('date', 'month').distinct()))
+    total_revenue = sum(float(sale.amount) for sale in sales_data)
+    avg_monthly = total_revenue / max(1, len(set([f"{sale.date.year}-{sale.date.month}" for sale in sales_data])))
     
-    # Current year data (monthly)
-    import datetime
-    current_year = datetime.datetime.now().year
-    current_year_sales = sales_data.filter(date__year=current_year)
+    # Calculate growth rate (comparing first and last month)
+    first_month_data = sales_data.order_by('date').first()
+    last_month_data = sales_data.order_by('-date').first()
     
+    if first_month_data and last_month_data and first_month_data != last_month_data:
+        months_between = ((last_month_data.date.year - first_month_data.date.year) * 12 + 
+                          last_month_data.date.month - first_month_data.date.month)
+        if months_between > 0:
+            # Convert Decimal to float before performing power operation
+            first_amount = float(first_month_data.amount)
+            last_amount = float(last_month_data.amount)
+            monthly_growth_rate = ((last_amount / first_amount) ** (1/months_between) - 1) * 100
+        else:
+            monthly_growth_rate = 0
+    else:
+        monthly_growth_rate = 0
+    
+    # Projected annual based on recent data
+    recent_data = sales_data.order_by('-date')[:3]
+    if recent_data:
+        recent_avg = sum(float(sale.amount) for sale in recent_data) / len(recent_data)
+        projected_annual = recent_avg * 12
+    else:
+        projected_annual = avg_monthly * 12
+    
+    # Current year monthly data
+    current_year = datetime.now().year
+    
+    # Initialize monthly data arrays
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    monthly_sales = [0] * 12
+    monthly_data = [0] * 12
     
-    for sale in current_year_sales:
-        month_idx = sale.date.month - 1  # 0-based index
-        monthly_sales[month_idx] += float(sale.amount)
+    # Group current year data by month
+    for sale in sales_data:
+        if sale.date.year == current_year:
+            # Month index is 0-based (Jan = 0)
+            month_idx = sale.date.month - 1
+            monthly_data[month_idx] += float(sale.amount)
     
-    current_year_data = {
-        'months': months,
-        'sales': monthly_sales
-    }
+    # Last year data for comparison
+    last_year = current_year - 1
+    last_year_data = [0] * 12
     
-    # Historical data (5 years)
-    from datetime import timedelta
-    five_years_ago = datetime.datetime.now().date() - timedelta(days=5*365)
-    historical_sales = sales_data.filter(date__gte=five_years_ago)
+    for sale in sales_data:
+        if sale.date.year == last_year:
+            month_idx = sale.date.month - 1
+            last_year_data[month_idx] += float(sale.amount)
     
-    historical_data = {
-        'dates': [item.date.strftime('%Y-%m') for item in historical_sales],
-        'sales': [float(item.amount) for item in historical_sales]
-    }
+    # Quarterly data
+    quarterly_data = [
+        sum(monthly_data[0:3]),   # Q1
+        sum(monthly_data[3:6]),   # Q2
+        sum(monthly_data[6:9]),   # Q3
+        sum(monthly_data[9:12])   # Q4
+    ]
     
-    # Prediction data (next 5 years)
-    import numpy as np
-    from sklearn.linear_model import LinearRegression
+    # Prepare data for sales forecast chart
+    # Get all dates and amounts for actual data
+    dates = [sale.date.strftime('%Y-%m-%d') for sale in sales_data.order_by('date')]
+    amounts = [float(sale.amount) for sale in sales_data.order_by('date')]
     
-    if len(sales_data) >= 5:  # Need enough data for prediction
-        # Prepare data for prediction
-        dates = [(s.date - sales_data[0].date).days for s in sales_data]
-        amounts = [float(s.amount) for s in sales_data]
+    # Generate forecast data (simple linear regression)
+    # Only do forecasting if we have enough data points
+    if len(dates) >= 5:
+        # Convert dates to numeric values (days since first date)
+        first_date = datetime.strptime(dates[0], '%Y-%m-%d')
+        date_nums = [(datetime.strptime(date, '%Y-%m-%d') - first_date).days for date in dates]
         
-        # Create and train model
-        X = np.array(dates).reshape(-1, 1)
+        # Reshape for sklearn
+        X = np.array(date_nums).reshape(-1, 1)
         y = np.array(amounts)
+        
+        # Fit model
         model = LinearRegression()
         model.fit(X, y)
         
-        # Generate future dates for prediction (5 years = ~1825 days)
-        last_date = sales_data.last().date
+        # Generate future dates for prediction (next 6 months)
+        last_date = datetime.strptime(dates[-1], '%Y-%m-%d')
         future_dates = []
-        future_days = []
+        future_date_nums = []
         
-        # Generate monthly predictions for 5 years
-        for i in range(1, 61):  # 5 years * 12 months
-            future_date = last_date + timedelta(days=i*30)  # Approximate month
-            future_dates.append(future_date.strftime('%Y-%m'))
-            future_days.append((future_date - sales_data[0].date).days)
+        for i in range(1, 181):  # 6 months ≈ 180 days
+            future_date = last_date + timedelta(days=i)
+            if i % 30 == 0:  # Approximately monthly points
+                future_dates.append(future_date.strftime('%Y-%m-%d'))
+                future_date_nums.append((future_date - first_date).days)
         
         # Make predictions
-        future_X = np.array(future_days).reshape(-1, 1)
+        future_X = np.array(future_date_nums).reshape(-1, 1)
         predictions = model.predict(future_X)
         
-        prediction_data = {
-            'dates': future_dates,
-            'sales': predictions.tolist()
-        }
+        # Combine actual and forecast data for the chart
+        forecast_labels = dates + future_dates
+        forecast_data = amounts + predictions.tolist()
+        
+        # Mark where actual data ends and forecast begins
+        forecast_separator_index = len(dates) - 1
     else:
-        # Not enough data for prediction
-        prediction_data = {
-            'dates': [],
-            'sales': []
-        }
+        # Not enough data for forecasting
+        forecast_labels = dates
+        forecast_data = amounts
+        forecast_separator_index = len(dates) - 1
     
-    return render(request, 'growth_app/business_analytics.html', {
+    context = {
         'business': business,
-        'sales_data': sales_data,
-        'total_sales': f"{total_sales:,.2f}",
-        'avg_monthly': f"{avg_monthly:,.2f}",
-        'current_year_data': current_year_data,
-        'historical_data': historical_data,
-        'prediction_data': prediction_data
-    })
+        'total_revenue': total_revenue,
+        'avg_monthly': avg_monthly,
+        'growth_rate': monthly_growth_rate,
+        'projected_annual': projected_annual,
+        'months': json.dumps(months),
+        'monthly_data': json.dumps(monthly_data),
+        'last_year_data': json.dumps(last_year_data),
+        'quarterly_data': json.dumps(quarterly_data),
+        'forecast_labels': json.dumps(forecast_labels),
+        'forecast_data': json.dumps(forecast_data),
+        'forecast_separator_index': forecast_separator_index
+    }
+    
+    return render(request, 'growth_app/business_analytics.html', context)
 
 
 @login_required
@@ -523,3 +610,32 @@ def sample_businesses_view(request):
     return render(request, 'growth_app/sample_businesses.html', {
         'sample_businesses': sample_businesses
     })
+
+
+@login_required
+def search_businesses(request):
+    """API endpoint to search for businesses owned by the current user."""
+    query = request.GET.get('q', '').strip()
+    results = []
+    
+    if query and len(query) >= 2:
+        # Search for businesses owned by the current user
+        businesses = Business.objects.filter(
+            Q(name__icontains=query) | 
+            Q(industry__icontains=query) | 
+            Q(business_type__icontains=query) |
+            Q(description__icontains=query),
+            owner=request.user
+        )[:10]  # Limit to 10 results
+        
+        results = [
+            {
+                'id': business.id,
+                'name': business.name,
+                'industry': business.industry,
+                'logo': business.logo.url if business.logo else None
+            }
+            for business in businesses
+        ]
+    
+    return JsonResponse({'businesses': results})

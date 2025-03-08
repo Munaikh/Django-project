@@ -35,3 +35,16 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return self.user.username
+
+class BusinessData(models.Model):
+    """Model to store business sales data by date"""
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, related_name='data_points')
+    date = models.DateField()
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    
+    class Meta:
+        ordering = ['date']
+        unique_together = ['business', 'date']
+        
+    def __str__(self):
+        return f"{self.business.name} - {self.date} - £{self.amount}"
