@@ -65,13 +65,32 @@
                     <h5 class="mb-0">Your Businesses</h5>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3">
-                        <input type="text" id="businessSearch" class="form-control" placeholder="Search businesses..." style="margin-bottom: 15px;">
-                    </div>
-                    {% if businesses %}
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h2>Your Businesses</h2>
+                            
+                            <div class="d-flex gap-3 mb-3">
+                                <!-- Search input -->
+                                <div class="flex-grow-1">
+                                    <input type="text" id="businessSearch" class="form-control" placeholder="Search businesses...">
+                                </div>
+                                
+                                <!-- Topic filter dropdown -->
+                                <div>
+                                    <select id="topicFilter" class="form-select">
+                                        <option value="">All Types</option>
+                                        <option value="Retail">Retail</option>
+                                        <option value="Restaurant">Restaurant</option>
+                                        <option value="Service">Service</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Manufacturing">Manufacturing</option>
+                                        <!-- Add more business types as needed -->
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <table class="table">
+                                <thead>
                                     <tr>
                                         <th>Business</th>
                                         <th>Type</th>
@@ -116,12 +135,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i class="fas fa-business-time fa-3x text-muted mb-3"></i>
-                            <p class="lead">You don't have any businesses yet.</p>
-                        </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,21 +176,32 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('businessSearch');
+    const topicFilter = document.getElementById('topicFilter');
     const tableRows = document.querySelectorAll('#businessTableBody tr');
     
-    searchInput.addEventListener('keyup', function() {
-        const searchTerm = this.value.toLowerCase();
+    // Function to filter table rows
+    function filterTable() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedTopic = topicFilter.value.toLowerCase();
         
-        // Simple client-side filtering (no AJAX)
         tableRows.forEach(row => {
             const businessName = row.querySelector('td:first-child').textContent.toLowerCase();
-            if (businessName.includes(searchTerm)) {
+            const businessType = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            
+            const matchesSearch = businessName.includes(searchTerm);
+            const matchesTopic = selectedTopic === '' || businessType === selectedTopic;
+            
+            if (matchesSearch && matchesTopic) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
             }
         });
-    });
+    }
+    
+    // Add event listeners
+    searchInput.addEventListener('keyup', filterTable);
+    topicFilter.addEventListener('change', filterTable);
 });
 </script>
 {% endblock %} 
