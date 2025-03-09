@@ -1,9 +1,14 @@
+# Django and related packages
 asgiref==3.8.1
 Django==5.1.7
+django-crispy-forms==1.14.0
+django-filter==2.4.0
+djangorestframework==3.13.1
+
+# Data Science and Analysis
 joblib==1.4.2
 numpy==2.2.3
 pandas==2.2.3
-pillow==11.1.0
 python-dateutil==2.9.0.post0
 pytz==2025.1
 scikit-learn==1.6.1
@@ -12,3 +17,21 @@ six==1.17.0
 sqlparse==0.5.3
 threadpoolctl==3.5.0
 tzdata==2025.1
+
+# Image Processing
+pillow==11.1.0
+
+# Frontend frameworks
+django-bootstrap5==21.3
+django-bootstrap4==22.1
+
+
+# Data Visualization
+matplotlib==3.5.1
+seaborn==0.11.2
+plotly==5.7.0
+
+# Utilities
+python-dotenv==0.19.2
+openpyxl==3.0.9
+xlrd==2.0.1
