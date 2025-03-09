@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     # Public pages
@@ -38,4 +39,33 @@ urlpatterns = [
     path('businesses/<int:business_id>/analytics/', views.business_analytics, name='business_analytics'),
     path('businesses/add-csv/', views.add_business_csv, name='add_business_csv'),
     path('api/search-businesses/', views.search_businesses, name='search_businesses'),
+    
+    # Password reset URLs
+    path('password-reset/', 
+         auth_views.PasswordResetView.as_view(
+             template_name='growth_app/password_reset.html',
+             email_template_name='growth_app/password_reset_email.html',
+             subject_template_name='growth_app/password_reset_subject.txt',
+             success_url='/password-reset/done/'
+         ),
+         name='password_reset'),
+    
+    path('password-reset/done/', 
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='growth_app/password_reset_done.html'
+         ),
+         name='password_reset_done'),
+    
+    path('password-reset-confirm/<uidb64>/<token>/', 
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='growth_app/password_reset_confirm.html',
+             success_url='/password-reset-complete/'
+         ),
+         name='password_reset_confirm'),
+    
+    path('password-reset-complete/', 
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='growth_app/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
 ] 
