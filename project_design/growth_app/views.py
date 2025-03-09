@@ -171,18 +171,6 @@ def add_business(request):
         form = BusinessForm()
     return render(request, "growth_app/add_business.html", {"form": form})
 
-
-def business_detail(request, business_id):
-    """Detail view for a specific business."""
-    business = get_object_or_404(Business, id=business_id)
-    sales_data = SalesData.objects.filter(business=business)
-    return render(
-        request,
-        "growth_app/business_detail.html",
-        {"business": business, "sales_data": sales_data},
-    )
-
-
 @login_required
 def edit_business(request, business_id):
     """Edit an existing business."""

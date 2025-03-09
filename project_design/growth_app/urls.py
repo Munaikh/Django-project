@@ -20,7 +20,6 @@ urlpatterns = [
     # Business management
     path('businesses/', views.businesses_list, name='businesses_list'),
     path('businesses/add/', views.add_business, name='add_business'),
-    path('businesses/<int:business_id>/', views.business_detail, name='business_detail'),
     path('businesses/<int:business_id>/edit/', views.edit_business, name='edit_business'),
     path('businesses/<int:business_id>/delete/', views.delete_business, name='delete_business'),
     

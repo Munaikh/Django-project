@@ -13,6 +13,11 @@ header {
     border-bottom: 1px solid #e9ecef;
 }
 
+.nav-item:hover .nav-link{
+    background-color: white;
+    color: black !important;
+}
+
 /* Logo */
 .logo {
     font-weight: bold;

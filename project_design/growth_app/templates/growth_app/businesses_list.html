@@ -39,7 +39,7 @@
         <div class="row">
             {% for business in businesses %}
                 <div class="col-md-4 mb-4">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow-lg">
                         {% if business.logo %}
                             <img src="{{ business.logo.url }}" class="card-img-top" alt="{{ business.name }}" style="height: 200px; object-fit: cover;">
                         {% else %}
