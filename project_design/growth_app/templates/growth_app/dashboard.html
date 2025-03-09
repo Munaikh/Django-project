@@ -65,6 +65,9 @@
                     <h5 class="mb-0">Your Businesses</h5>
                 </div>
                 <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" id="businessSearch" class="form-control" placeholder="Search businesses..." style="margin-bottom: 15px;">
+                    </div>
                     {% if businesses %}
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
@@ -76,7 +79,7 @@
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="businessTableBody">
                                     {% for business in businesses %}
                                     <tr>
                                         <td>
@@ -155,4 +158,25 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('businessSearch');
+    const tableRows = document.querySelectorAll('#businessTableBody tr');
+    
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = this.value.toLowerCase();
+        
+        // Simple client-side filtering (no AJAX)
+        tableRows.forEach(row => {
+            const businessName = row.querySelector('td:first-child').textContent.toLowerCase();
+            if (businessName.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
 {% endblock %} 
