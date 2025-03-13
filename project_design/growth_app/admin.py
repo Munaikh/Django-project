@@ -4,3 +4,4 @@ from growth_app.models import UserProfile, Business
 
 admin.site.register(UserProfile)
 admin.site.register(Business)
+#admin profiles
