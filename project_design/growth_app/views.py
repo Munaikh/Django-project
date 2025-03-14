@@ -40,18 +40,8 @@ def signin_view(request):
     if request.method == "POST":
         form = SignInForm(request, data=request.POST)
         if form.is_valid():
-            # Extract username and password from the form
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-
-            user = authenticate(username=username, password=password)
-
-            if user is not None:
-                login(request, user)
-                return redirect("businesses_list")
-            else:
-                # Add error message if authentication fails
-                form.add_error(None, "Invalid username or password")
+            login(request, form.get_user())
+            return redirect("businesses_list")
         else:
             print(form.errors)
     else:
