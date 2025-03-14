@@ -132,14 +132,14 @@
 {% if not no_data %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Data from Django
-        var months = {{ months|safe }};
-        var monthlyData = {{ monthly_data|safe }};
-        var lastYearData = {{ last_year_data|safe }};
-        var quarterlyData = {{ quarterly_data|safe }};
-        var forecastLabels = {{ forecast_labels|safe }};
-        var forecastData = {{ forecast_data|safe }};
-        var forecastSeparatorIndex = {{ forecast_separator_index }};
+        // Data from Django, safely encoded as JSON
+        var months = JSON.parse(document.getElementById('months-data').textContent);
+        var monthlyData = JSON.parse(document.getElementById('monthly-data').textContent);
+        var lastYearData = JSON.parse(document.getElementById('last-year-data').textContent);
+        var quarterlyData = JSON.parse(document.getElementById('quarterly-data').textContent);
+        var forecastLabels = JSON.parse(document.getElementById('forecast-labels').textContent);
+        var forecastData = JSON.parse(document.getElementById('forecast-data').textContent);
+        var forecastSeparatorIndex = JSON.parse(document.getElementById('forecast-separator-index').textContent);
         
         console.log("Monthly Data:", monthlyData);
         console.log("Forecast Data:", forecastData);
