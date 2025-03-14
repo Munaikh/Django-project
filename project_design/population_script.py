@@ -1,16 +1,15 @@
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'growth_project.settings')
 import django
+django.setup()
+
 import random
 from datetime import datetime, timedelta
 from django.core.files.images import ImageFile
 from django.contrib.auth.models import User
 
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'growth_project.settings')
-django.setup()
-
-
 from growth_app.models import Business, SalesData, UserProfile
+
 
 def create_user(username, email, password, first_name, last_name):
     """Create a user and associated profile"""
