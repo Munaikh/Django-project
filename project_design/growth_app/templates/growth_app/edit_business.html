@@ -46,17 +46,17 @@
                                 </div>
                                 {% endif %}
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="{{ form.type.id_for_label }}" class="form-label">Business Type</label>
-                                {{ form.type }}
-                                {% if form.type.errors %}
-                                <div class="text-danger mt-1">
-                                    {% for error in form.type.errors %}
-                                        {{ error }}
-                                    {% endfor %}
-                                </div>
-                                {% endif %}
+                                <select name="type" id="id_type" class="form-select">
+                                    <option value="Retail">Retail</option>
+                                    <option value="Service">Service</option>
+                                    <option value="Manufacturing">Manufacturing</option>
+                                    <option value="Technology">Technology</option>
+                                    <option value="Food">Food & Beverage</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             
                             <div class="mb-3">

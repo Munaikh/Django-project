@@ -36,7 +36,7 @@ urlpatterns = [
     # Add these to your urlpatterns
     path('businesses/public/', views.public_businesses, name='public_businesses'),
     path('businesses/<int:business_id>/upload-csv/', views.upload_csv, name='upload_csv'),
-    path('businesses/<int:business_id>/analytics/', views.business_analytics, name='business_analytics'),
+    path('businesses/<int:business_id>/', views.business_analytics, name='business_analytics'),
     path('businesses/add-csv/', views.add_business_csv, name='add_business_csv'),
     path('api/search-businesses/', views.search_businesses, name='search_businesses'),
     
