@@ -75,7 +75,7 @@ def populate():
     cafe = create_business(
         name="Morning Brew Café",
         description="A cozy café serving specialty coffee and pastries.",
-        business_type="Food & Beverage",
+        business_type="Resturant",
         owner=john
     )
     
@@ -96,7 +96,7 @@ def populate():
     fitness = create_business(
         name="FlexFit Gym",
         description="Modern fitness center with personal training services.",
-        business_type="Health & Fitness",
+        business_type="Service",
         owner=john
     )
     
