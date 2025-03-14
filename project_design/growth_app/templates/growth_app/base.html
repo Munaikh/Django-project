@@ -72,32 +72,21 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark py-4 mt-auto">
-        <div class="container-fluid">
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
             <div class="row">
-                <div class="col-md-3">
-                    <div class="logo mb-3">
-                        <img src="{% static 'images/growth-logo.png' %}" alt="Growth" width="40" height="40">
-                    </div>
+                <div class="col-md-6">
+                    <h5>Contact Information</h5>
+                    <p><i class="fas fa-phone"></i> +44 7272727272</p>
+                    <p><i class="fas fa-map-marker-alt"></i> University of Glasgow, University Avenue, Glasgow G12 8QQ, United Kingdom</p>
                 </div>
-                <div class="col-md-3">
-                    <h5 class="text-white">Sections</h5>
-                    <ul class="list-unstyled">
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'dashboard' %}" class="text-white">Dashboard</a></li>
-                            <li><a href="{% url 'businesses_list' %}" class="text-white">Businesses</a></li>
-                        {% else %}
-                            <li><a href="{% url 'signin' %}" class="text-white">Sign In</a></li>
-                            <li><a href="{% url 'register' %}" class="text-white">Register</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'about_us' %}" class="text-white">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3 text-white">
-                <h5 class="fw-bold mb-3">Contact Information</h5>
-                <p><i class="fas fa-envelope me-2 text-white"></i> <a href="mailto:contact@growth-analytics.com" class="text-decoration-none text-white">contact@growth-analytics.com</a></p>
-                <p><i class="fas fa-phone me-2 text-white"></i> +1 (555) 123-4567</p>
-                <p><i class="fas fa-map-marker-alt me-2 text-white"></i> 123 Business Avenue, Suite 200<br>San Francisco, CA 94107</p>
+                <div class="col-md-6">
+                    <h5>Follow Us</h5>
+                    <!-- Social media icons -->
+                    <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
         </div>
