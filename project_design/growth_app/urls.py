@@ -30,10 +30,10 @@ urlpatterns = [
     # AJAX endpoints
     path('api/sales-data/<int:business_id>/', views.get_sales_data, name='get_sales_data'),
     
-    # Add this to your urlpatterns
+    # Delete Account URL
     path('delete-account/', views.delete_account, name='delete_account'),
     
-    # Add these to your urlpatterns
+    # Business Admin
     path('businesses/public/', views.public_businesses, name='public_businesses'),
     path('businesses/<int:business_id>/upload-csv/', views.upload_csv, name='upload_csv'),
     path('businesses/<int:business_id>/', views.business_analytics, name='business_analytics'),
