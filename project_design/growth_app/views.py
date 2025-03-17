@@ -37,6 +37,9 @@ def about_us(request):
 
 def signin_view(request):
     """User login view."""
+    if request.user.is_authenticated:
+        return redirect("businesses_list")
+    
     if request.method == "POST":
         form = SignInForm(request, data=request.POST)
         if form.is_valid():
@@ -51,6 +54,9 @@ def signin_view(request):
 
 def register_view(request):
     """User registration view."""
+    if request.user.is_authenticated:
+        return redirect("businesses_list")
+    
     if request.method == "POST":
         form = RegistrationForm(request.POST)
         if form.is_valid():
