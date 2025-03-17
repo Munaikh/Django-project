@@ -124,6 +124,9 @@ def dashboard(request):
 @login_required
 def user_settings(request):
     """User settings page for profile and password management."""
+    profile_form = UserProfileForm(instance=request.user.profile)
+    password_form = PasswordChangeForm(request.user)
+
     if request.method == "POST":
         if "update_profile" in request.POST:
             profile_form = UserProfileForm(

@@ -31,7 +31,7 @@ class AuthenticationTests(TestCase):
             email="john_smith@example.com",
             password="password123",
             first_name="John",
-            last_name="Smith"
+            last_name="Smith",
         )
         self.profile = UserProfile.objects.create(user=self.test_user)
 
@@ -100,6 +100,72 @@ class AuthenticationTests(TestCase):
         for page in self.pages_login_required:
             response = self.client.get(reverse(page))
             self.assertEqual(response.status_code, 302)
+    
+    def test_change_password(self):
+        """
+        Ensures a user can update their last password and can log in with the new password
+        """
+        self.client.login(username="John_Smith", password="password123")
+
+        response = self.client.post(reverse("user_settings"), {
+            'change_password': ['1'],
+            'old_password': ['password123'], 
+            'new_password1': ['New@Secure10Pass'], 
+            'new_password2': ['New@Secure10Pass']
+        })
+        self.assertTrue(response)
+
+        self.client.get(reverse("logout"))
+
+        response = self.client.login(username="John_Smith", password="New@Secure10Pass")
+        self.assertTrue(response)
+
+    def test_update_first_name(self):
+        """
+        Ensures a user can update their first name
+        """
+        self.client.login(username="John_Smith", password="password123")
+        response = self.client.post(reverse("user_settings"), {
+            'update_profile': ['1'],
+            'first_name': ['Jonas'],
+            'last_name': self.test_user.last_name,
+            'email': self.test_user.email,
+        })
+
+        self.assertTrue(response)
+
+        self.test_user.refresh_from_db()
+        self.assertEqual(self.test_user.first_name, "Jonas")
+    
+    def test_update_last_name(self):
+        """
+        Ensures a user can update their last name
+        """
+        self.client.login(username="John_Smith", password="password123")
+        response = self.client.post(reverse("user_settings"), {
+            'update_profile': ['1'],
+            'first_name': self.test_user.first_name,
+            'last_name': ['Cameron'], 
+            'email': self.test_user.email, 
+        })
+
+        self.assertTrue(response)
+
+        self.test_user.refresh_from_db()
+        self.assertEqual(self.test_user.last_name, "Cameron")
+
+
+    def test_delete_account(self):
+        """
+        Ensures a user can delete their account
+        """
+        self.client.login(username="John_Smith", password="password123")
+
+        response = self.client.post(reverse("delete_account"))
+        self.assertEqual(response.status_code, 302)
+
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(username="John_Smith")
 
 class BusinessMethodTests(TestCase):
     def test_name_not_empty(self):
