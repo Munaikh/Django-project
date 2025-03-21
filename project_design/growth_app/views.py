@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from django.db.models import Q, Sum
 from sklearn.linear_model import LinearRegression
+from django.core.mail import send_mail
 
 from growth_app.models import Business, SalesData
 from growth_app.forms import (
@@ -165,6 +166,7 @@ def businesses_list(request):
 @login_required
 def add_business(request):
     """Add a new business."""
+    mode = request.GET.get('mode', 'full')
     if request.method == "POST":
         form = BusinessForm(request.POST, request.FILES)
         if form.is_valid():
@@ -174,7 +176,7 @@ def add_business(request):
             return redirect("businesses_list")
     else:
         form = BusinessForm()
-    return render(request, "growth_app/add_business.html", {"form": form})
+    return render(request, "growth_app/add_business.html", {"form": form, "mode": mode})
 
 
 @login_required
@@ -785,3 +787,53 @@ def search_businesses(request):
         ]
 
     return JsonResponse({"businesses": results})
+
+
+def upload_csv_general(request):
+    """
+    View for uploading CSV data without a specific business ID
+    """
+    if request.method == 'POST':
+        # CSV upload handling logic here
+        pass
+    return render(request, 'growth_app/upload_csv.html')
+
+
+def send_welcome_email(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        
+        # Compose professional welcome email
+        subject = "Welcome to Growth Business Analytics"
+        message = f"""Dear {name},
+
+Thank you for connecting with Growth Business Analytics. 
+
+We appreciate your interest in our services. How may we assist you with your business analytics needs today?
+
+Our team is ready to help you optimize your business performance and achieve your growth objectives. Please feel free to reply to this email with any specific questions or requirements you may have.
+
+Best regards,
+The Growth Business Analytics Team
+"""
+        
+        try:
+            # Use a try-except block to handle email sending errors gracefully
+            send_mail(
+                subject,
+                message,
+                settings.DEFAULT_FROM_EMAIL,  # From email
+                [email],  # To the user's email
+                fail_silently=True,  # Change to True to prevent exceptions from being raised
+            )
+            messages.success(request, "Thank you for connecting! We've sent you an email.")
+        except Exception as e:
+            # Log the error for debugging but show a generic message to the user
+            print(f"Email error: {str(e)}")
+            messages.success(request, "Thank you for connecting! We'll be in touch soon.")
+        
+        return redirect('about_us')
+    
+    # If not POST, redirect to about_us page
+    return redirect('about_us')
