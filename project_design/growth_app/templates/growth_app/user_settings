@@ -1,6 +1,0 @@
-{% extends 'growth_app/base.html' %}
-{% block title %}Settings - Growth{% endblock %}
-
-{% block content %}
-
-{% endblock %}
