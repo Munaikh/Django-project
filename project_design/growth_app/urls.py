@@ -34,7 +34,6 @@ urlpatterns = [
     path('delete-account/', views.delete_account, name='delete_account'),
     
     # Business Admin
-    path('businesses/public/', views.public_businesses, name='public_businesses'),
     path('businesses/<int:business_id>/upload-csv/', views.upload_csv, name='upload_csv'),
     path('businesses/<int:business_id>/', views.business_analytics, name='business_analytics'),
     path('businesses/add-csv/', views.add_business_csv, name='add_business_csv'),
