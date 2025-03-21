@@ -1,59 +1,203 @@
 {% extends 'growth_app/base.html' %}
-
-{% block title %}Growth - A powerful solution for your business{% endblock %}
-
 {% block content %}
+{% load static %}
+
 <div class="container py-5">
     <!-- Hero Section -->
-    <div class="row py-5">
-        <div class="col-lg-7">
+    <div class="row">
+        <div class="col-lg-12">
             <h1 class="display-4 font-weight-bold">A powerful solution to analyze and grow your business. Fast!</h1>
             <p class="lead mt-3 mb-4">Track performance, gain insights, and make data-driven decisions with our all-in-one business analytics platform.</p>
             <div class="mt-4">
                 <a href="{% url 'register' %}" class="btn btn-dark px-4 py-2 mr-2">Get Started</a>
-                <a href="#" class="btn btn-outline-secondary px-4 py-2">Book Demo</a>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="bg-light rounded p-4" style="height: 200px;"></div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="bg-light rounded p-4" style="height: 200px;"></div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="bg-light rounded p-4" style="height: 200px;"></div>
-                </div>
-                <div class="col-md-6 mb-4">
-                    <div class="bg-light rounded p-4" style="height: 200px;"></div>
+                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary px-4 py-2">Watch Demo</a>
+                <div class="landing-images col-lg-12">
+                    <img src="{% static 'images/landing-img-1.png' %}" alt="Growth" width="50%" height="10%">         
+                    <div class="landing-images col-lg-6">
+                        <img src="{% static 'images/landing-img-2.png' %}" alt="Growth" width="40%" height="80%">
+                        <img src="{% static 'images/landing-img-3.png' %}" alt="Growth" width="50%" height="80%">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+   
 
     <!-- Features Section -->
-    <div class="py-5">
-        <h2 class="mb-3">What do we offer</h2>
-        <p class="text-muted">Subheading</p>
-        
-        <div class="row mt-4">
-            {% for i in '123456'|make_list %}
-            <div class="col-md-4 mb-4">
-                <div class="d-flex">
-                    <div class="mr-3">
-                        <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <span>{{ forloop.counter }}</span>
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2>What do we offer</h2>
+            <p class="mb-4">Powerful tools to transform your business analytics</p>
+            
+            <div class="row g-4">
+                <!-- Feature 1 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">1</span> Real-Time Analytics
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Real-Time Analytics" class="feature-image">
+                            <div class="hover-content">
+                                <p>Monitor your business performance in real-time with interactive dashboards that update automatically. Track key metrics, identify trends, and make data-driven decisions instantly.</p>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <h5>Title</h5>
-                        <p class="text-muted">Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a very short story.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">2</span> Predictive Forecasting
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Predictive Forecasting" class="feature-image">
+                            <div class="hover-content">
+                                <p>Leverage machine learning algorithms to predict future trends and outcomes. Our forecasting tools help you anticipate market changes and plan your business strategy accordingly.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">3</span> Custom Reporting
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Custom Reporting" class="feature-image">
+                            <div class="hover-content">
+                                <p>Create tailored reports that focus on the metrics that matter most to your business. Export in multiple formats and schedule automated report delivery to stakeholders.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">4</span> Multi-Business Management
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Multi-Business Management" class="feature-image">
+                            <div class="hover-content">
+                                <p>Manage multiple businesses from a single dashboard. Compare performance, allocate resources efficiently, and implement successful strategies across your entire portfolio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">5</span> Data Visualization
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Data Visualization" class="feature-image">
+                            <div class="hover-content">
+                                <p>Transform complex data into intuitive visual representations. Our interactive charts and graphs make it easy to understand trends, patterns, and outliers at a glance.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-header">
+                            <span class="feature-number">6</span> Growth Insights
+                        </div>
+                        <div class="feature-body">
+                            <img src="https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Growth Insights" class="feature-image">
+                            <div class="hover-content">
+                                <p>Receive AI-powered recommendations to accelerate your business growth. Identify opportunities, optimize operations, and develop strategies based on data-driven insights.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
-    </div>
+    </section>
 </div>
+
+<style>
+/* Feature styling */
+.feature-item {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.feature-header {
+    background-color: #212529;
+    color: white;
+    padding: 15px;
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.feature-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: #6c757d;
+    color: white;
+    border-radius: 50%;
+    margin-right: 10px;
+    font-size: 1rem;
+}
+
+.feature-body {
+    background-color: white;
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.feature-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.hover-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.feature-item:hover .hover-content {
+    opacity: 1;
+}
+
+.feature-item:hover .feature-image {
+    transform: scale(1.1);
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+</style>
 {% endblock %} 

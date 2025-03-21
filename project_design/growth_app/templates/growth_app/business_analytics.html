@@ -1,0 +1,289 @@
+{% extends 'growth_app/base.html' %}
+{% load static %}
+
+{% block title %}{{ business.name }} Analytics - Growth{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-3">{{ business.name }} Analytics</h1>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'businesses_list' %}">Businesses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    {% if no_data %}
+        <div class="alert alert-info">
+            <h4 class="alert-heading">No Sales Data Available</h4>
+            <p>You haven't uploaded any sales data for this business yet. Upload a CSV file to see analytics and predictions.</p>
+            <hr>
+            <div class="mt-3">
+                <a href="{% url 'upload_csv' business.id %}" class="btn btn-primary">Upload Sales Data</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Key Metrics Summary -->
+        <div class="row mb-4">
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Total Revenue</h6>
+                        <h3 class="mb-0">£{{ total_revenue|floatformat:2 }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Average Monthly</h6>
+                        <h3 class="mb-0">£{{ avg_monthly|floatformat:2 }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Growth Rate</h6>
+                        <h3 class="mb-0">{{ growth_rate|floatformat:1 }}%</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="text-muted mb-1">Projected Annual</h6>
+                        <h3 class="mb-0">£{{ projected_annual|floatformat:2 }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Year Sales -->
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Current Year Sales</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 300px;">
+                            <canvas id="currentYearSales"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Comparison -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Year-over-Year Comparison</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 250px;">
+                            <canvas id="yearComparison"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Sales by Quarter</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 250px;">
+                            <canvas id="quarterSales"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Forecast -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="card-title mb-0">Sales Forecast</h5>
+                    </div>
+                    <div class="card-body">
+                        <div style="height: 300px;">
+                            <canvas id="salesForecast"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% if not no_data %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Data from Django
+        var months = {{ months|safe }};
+        var monthlyData = {{ monthly_data|safe }};
+        var lastYearData = {{ last_year_data|safe }};
+        var quarterlyData = {{ quarterly_data|safe }};
+        var forecastLabels = {{ forecast_labels|safe }};
+        var forecastData = {{ forecast_data|safe }};
+        var forecastSeparatorIndex = {{ forecast_separator_index }};
+        
+        console.log("Monthly Data:", monthlyData);
+        console.log("Forecast Data:", forecastData);
+        
+        // Current Year Sales Chart
+        var currentYearSalesCtx = document.getElementById('currentYearSales').getContext('2d');
+        var currentYearSalesChart = new Chart(currentYearSalesCtx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: monthlyData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Year Comparison Chart
+        var yearComparisonCtx = document.getElementById('yearComparison').getContext('2d');
+        var yearComparisonChart = new Chart(yearComparisonCtx, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'This Year',
+                        data: monthlyData,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        fill: true
+                    },
+                    {
+                        label: 'Last Year',
+                        data: lastYearData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Quarter Sales Chart
+        var quarterSalesCtx = document.getElementById('quarterSales').getContext('2d');
+        var quarterSalesChart = new Chart(quarterSalesCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [{
+                    data: quarterlyData,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Sales Forecast Chart
+        var forecastCtx = document.getElementById('salesForecast').getContext('2d');
+        
+        // Create datasets for actual and forecast data
+        var actualData = forecastData.slice(0, forecastSeparatorIndex + 1);
+        var predictionData = Array(forecastSeparatorIndex + 1).fill(null).concat(
+            forecastData.slice(forecastSeparatorIndex + 1)
+        );
+        
+        var forecastChart = new Chart(forecastCtx, {
+            type: 'line',
+            data: {
+                labels: forecastLabels,
+                datasets: [
+                    {
+                        label: 'Actual Sales',
+                        data: actualData,
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                        pointRadius: 3,
+                        fill: false
+                    },
+                    {
+                        label: 'Forecast',
+                        data: predictionData,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                        borderDash: [5, 5],
+                        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                        pointRadius: 3,
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: {
+                            maxRotation: 45,
+                            minRotation: 45
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endif %}
+
+<script>
+    // Show footer only when scrolling
+    window.addEventListener('scroll', function() {
+        const footer = document.getElementById('scroll-footer');
+        if (window.scrollY > 300) {
+            footer.classList.remove('d-none');
+            footer.classList.add('fixed-bottom');
+        } else {
+            footer.classList.add('d-none');
+            footer.classList.remove('fixed-bottom');
+        }
+    });
+</script>
+{% endblock %} 

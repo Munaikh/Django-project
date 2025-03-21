@@ -1,0 +1,204 @@
+{% extends 'growth_app/base.html' %}
+{% block title %}About Us - Growth{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5 align-items-center">
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold mb-3">Transforming Data Into Insights</h1>
+            <p class="lead mb-4">At Growth, we empower businesses to make strategic decisions through powerful analytics that reveal the story behind your data.</p>
+        </div>
+        <div class="col-lg-6">
+            <div class="rounded shadow-lg overflow-hidden mx-auto" style="height: 450px; max-width: 350px;">
+                <img src="{% static 'images/hero-image.jpg' %}" alt="Growth Analytics" class="img-fluid w-100 h-100 object-cover object-position-top">
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Mission Section -->
+    <div class="row mb-5 py-5 align-items-center">
+        <div class="col-lg-6 order-lg-2">
+            <h2 class="fw-bold mb-3">Our Mission</h2>
+            <p class="text-primary fw-semibold mb-2">Making data accessible for everyone</p>
+            <p class="mb-3">We believe that data-driven decision making shouldn't be limited to large corporations with extensive resources. Our mission is to democratize business analytics by providing intuitive, powerful tools that businesses of any size can leverage to grow and thrive.</p>
+            <p>By combining sophisticated analytics with user-friendly design, we've created a platform that transforms complex data into clear, actionable insights—no technical expertise required.</p>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+            <div class="rounded shadow overflow-hidden mx-auto" style="height: 450px; max-width: 350px;">
+                <img src="{% static 'images/mission-image.jpg' %}" alt="Our Mission" class="img-fluid w-100 h-100 object-cover object-position-top">
+            </div>
+        </div>
+    </div>
+
+    <!-- Our Team Section -->
+    <div class="row mb-5 py-5 align-items-center">
+        <div class="col-lg-6">
+            <h2 class="fw-bold mb-3">Our Team</h2>
+            <p class="text-primary fw-semibold mb-2">Experts passionate about your success</p>
+            <p class="mb-3">Behind Growth is a diverse team of data scientists, business analysts, and software engineers united by a common goal: helping businesses unlock their full potential through data.</p>
+            <p>With experience spanning multiple industries, we understand the unique challenges businesses face and develop solutions that address real-world needs. We're not just building software—we're building partnerships that drive success.</p>
+        </div>
+        <div class="col-lg-6">
+            <div class="rounded shadow overflow-hidden mx-auto" style="height: 450px; max-width: 350px;">
+                <img src="{% static 'images/team-image.jpg' %}" alt="Our Team" class="img-fluid w-100 h-100 object-cover object-position-top">
+            </div>
+        </div>
+    </div>
+
+     <!-- FAQ Section -->
+     <div class="row py-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Frequently Asked Questions</h2>
+            <p class="text-primary fw-semibold">Everything you need to know about our platform</p>
+        </div>
+        <div class="col-lg-10 col-xl-8 mx-auto">
+            <div class="accordion" id="faqAccordion">
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            How does Growth Analytics help my business?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Growth Analytics transforms your business data into clear, actionable insights. Our platform helps you track performance metrics, identify growth opportunities, spot emerging trends, and make confident, data-driven decisions. We simplify complex data analysis so you can focus on what matters most—growing your business.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Do I need technical expertise to use your platform?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Not at all! We've designed our platform with simplicity in mind. Our intuitive dashboards and guided setup process make it easy for anyone to get started—no coding or technical background required. And if you ever need assistance, our support team is just a click away.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            How secure is my business data on your platform?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Security is our top priority. We implement bank-level encryption, secure data centers, and strict access controls to protect your information. Our platform complies with industry standards and regulations, and we regularly conduct security audits to ensure your data remains safe and confidential.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Can I integrate Growth Analytics with my existing tools?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Absolutely! Growth Analytics seamlessly integrates with popular business tools including QuickBooks, Shopify, Salesforce, HubSpot, and many more. Our flexible API and pre-built connectors make it easy to bring all your data together in one place. If you need a specific integration, our team is ready to help.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item border-0 mb-3 shadow-sm rounded">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button collapsed rounded" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            What kind of support do you offer?
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We're committed to your success. Our support includes comprehensive documentation, video tutorials, regular webinars, and a knowledge base filled with best practices. Our customer success team is available via email, live chat, and scheduled calls to answer questions, provide guidance, and ensure you're getting maximum value from our platform.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contact Section -->
+    <div class="row py-5 mb-5">
+        <div class="col-12 text-center mb-4">
+            <h2 class="fw-bold">Connect With Us</h2>
+            <p class="text-primary fw-semibold">Let's start a conversation</p>
+        </div>
+        <div class="col-md-10 col-lg-8 mx-auto">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-body p-4 p-md-5">
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h5 class="fw-bold mb-3">Contact Information</h5>
+                            <p><i class="fas fa-envelope me-2 text-primary"></i> <a href="mailto:contact@growth-analytics.com" class="text-decoration-none">contact@growth-analytics.com</a></p>
+                            <p><i class="fas fa-phone me-2 text-primary"></i> +44 772727222</p>
+                            <p><i class="fas fa-map-marker-alt me-2 text-primary"></i> University of Glasgow, G12 8QQ<br>United Kingdom</p>
+                            
+                            <h5 class="fw-bold mb-3 mt-4">Follow Us</h5>
+                            <div class="d-flex gap-3">
+                                <a href="https://www.x.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle p-2">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle p-2">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle p-2">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-circle p-2">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="fw-bold mb-3">Send Us a Message</h5>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your Email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="3" placeholder="Your Message" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-dark w-100">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add custom CSS for object-cover and object-position since they might not be supported in all browsers
+    document.addEventListener('DOMContentLoaded', function() {
+        const objectCoverImages = document.querySelectorAll('.object-cover');
+        objectCoverImages.forEach(img => {
+            img.style.objectFit = 'cover';
+        });
+        
+        const objectPositionTopImages = document.querySelectorAll('.object-position-top');
+        objectPositionTopImages.forEach(img => {
+            img.style.objectPosition = 'center top';
+        });
+    });
+</script>
+{% endblock %}
