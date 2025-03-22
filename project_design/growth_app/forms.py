@@ -10,6 +10,20 @@ from django.contrib.auth import authenticate
 
 
 class RegistrationForm(UserCreationForm):
+    name = forms.CharField(
+        required=True,
+        max_length=30,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "First Name"}
+        ),
+    )
+    surname = forms.CharField(
+        required=True,
+        max_length=30,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Last Name"}
+        ),
+    )
     email = forms.EmailField(
         required=True,
         widget=forms.EmailInput(
@@ -31,9 +45,11 @@ class RegistrationForm(UserCreationForm):
         help_text="Enter the same password as before, for verification.",
     )
 
+    allowed_characters = " -'"
+
     class Meta:
         model = User
-        fields = ("email", "password1", "password2")
+        fields = ("name", "surname", "email", "password1", "password2")
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -43,8 +59,31 @@ class RegistrationForm(UserCreationForm):
             )
         return email
 
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        for c in name:
+            if not(c.isalpha() or c in self.__class__.allowed_characters):
+                raise forms.ValidationError(
+                    "Name can only contain letters, spaces, hyphens, and apostrophes."
+                )
+
+        return name.title()
+
+    def clean_surname(self):
+        surname = self.cleaned_data.get("surname")
+        
+        for c in surname:
+            if not(c.isalpha() or c in self.__class__.allowed_characters):
+                raise forms.ValidationError(
+                    "Surname can only contain letters, spaces, hyphens, and apostrophes."
+                )
+
+        return surname.title()
+
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.first_name = self.cleaned_data["name"]
+        user.last_name = self.cleaned_data["surname"]
         user.email = self.cleaned_data["email"]
         # Use email as username (Django still requires a username)
         user.username = self.cleaned_data["email"]

@@ -26,6 +26,31 @@
                     {% endif %}
                     <form method="post">
                         {% csrf_token %}
+                        <!-- Name TextBox Form -->
+                        <div class="form-group mb-3">
+                            <label for="{{ form.email.id_for_label }}">Name</label>
+                            {{ form.name }}
+                            {% if form.name.errors %}
+                            <div class="text-danger">
+                                {% for error in form.name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <!-- Surname TextBox Form -->
+                        <div class="form-group mb-3">
+                            <label for="{{ form.email.id_for_label }}">Surname</label>
+                            {{ form.surname }}
+                            {% if form.surname.errors %}
+                            <div class="text-danger">
+                                {% for error in form.surname.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <!-- Email TextBox Form -->
                         <div class="form-group mb-3">
                             <label for="{{ form.email.id_for_label }}">Email</label>
                             {{ form.email }}
@@ -37,6 +62,7 @@
                             </div>
                             {% endif %}
                         </div>
+                        <!-- Password TextBox Form -->
                         <div class="form-group mb-3">
                             <label for="{{ form.password1.id_for_label }}">Password</label>
                             {{ form.password1 }}
@@ -49,6 +75,7 @@
                             {% endif %}
                             <small class="form-text text-muted">{{ form.password1.help_text }}</small>
                         </div> 
+                        <!-- Confirm Password TextBox Form -->
                         <div class="form-group mb-3">
                             <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
                             {{ form.password2 }}
