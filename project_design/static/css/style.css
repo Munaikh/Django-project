@@ -44,12 +44,15 @@ main {
     margin-right: 10px;
 }
 
-.landing-images{
-    display: flex;
-    flex-direction: row;
-    gap:50px;
+.landing-img {
+    max-width: 90%;
 }
 
+@media (max-width: 576px) {
+    .landing-img {
+        max-width: 50% !important;
+    }
+}
 
 /* Buttons */
 .btn-dark {
