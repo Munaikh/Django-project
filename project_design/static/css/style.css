@@ -18,6 +18,23 @@ header {
     color: black !important;
 }
 
+@media (max-width: 576px) {
+    nav ul.nav li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        text-align: center;
+    }
+
+    .screen-logo {
+        flex-grow: 1;  
+        justify-content: center; 
+    }
+}
+
 /* Logo */
 .logo {
     font-weight: bold;
