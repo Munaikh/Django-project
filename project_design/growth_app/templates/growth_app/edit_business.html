@@ -50,12 +50,11 @@
                             <div class="mb-3">
                                 <label for="{{ form.type.id_for_label }}" class="form-label">Business Type</label>
                                 <select name="type" id="id_type" class="form-select">
-                                    <option value="Retail">Retail</option>
-                                    <option value="Service">Service</option>
-                                    <option value="Manufacturing">Manufacturing</option>
-                                    <option value="Technology">Technology</option>
-                                    <option value="Food">Food & Beverage</option>
-                                    <option value="Other">Other</option>
+                                    {% for val, label in form.fields.type.choices %}
+                                        <option value="{{ val }}" {% if form.initial.type == val or form.data.type == val %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
                                 </select>
                             </div>
                             

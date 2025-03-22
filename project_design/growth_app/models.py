@@ -4,11 +4,20 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Business(models.Model):
+    BUSINESS_TYPES = [
+        ['Retail', 'Retail'],
+        ['Service', 'Service'],
+        ['Manufacturing', 'Manufacturing'],
+        ['Technology', 'Technology'],
+        ['Food', 'Food & Beverage'],
+        ['Other', 'Other'],
+    ]
+
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='businesses')
     logo = models.ImageField(upload_to='business_logos/', blank=True, null=True)
-    type = models.CharField(max_length=50, blank=True, null=True)
+    type = models.CharField(max_length=50, blank=True, null=True, choices=BUSINESS_TYPES)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
