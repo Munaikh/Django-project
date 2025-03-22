@@ -24,8 +24,6 @@ urlpatterns = [
     path('businesses/<int:business_id>/edit/', views.edit_business, name='edit_business'),
     path('businesses/<int:business_id>/delete/', views.delete_business, name='delete_business'),
     
-    # Sales data
-    path('businesses/<int:business_id>/add-data/', views.add_sales_data, name='add_sales_data'),
     
     # AJAX endpoints
     path('api/sales-data/<int:business_id>/', views.get_sales_data, name='get_sales_data'),

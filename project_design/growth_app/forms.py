@@ -151,15 +151,9 @@ class BusinessForm(forms.ModelForm):
             'logo': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
-
-class SalesDataForm(forms.ModelForm):
-    class Meta:
-        model = SalesData
-        fields = ["amount", "date"]
-        widgets = {
-            "date": forms.DateInput(attrs={"type": "date"}),
-        }
-
+class UploadCSVForm(forms.Form):
+    csv_file = forms.FileField()
+    replace_existing = forms.BooleanField(required=False, label="Replace existing")
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

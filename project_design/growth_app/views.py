@@ -19,7 +19,7 @@ from growth_app.models import Business, SalesData
 from growth_app.forms import (
     RegistrationForm,
     BusinessForm,
-    SalesDataForm,
+    UploadCSVForm,
     UserProfileForm,
     PasswordChangeForm,
     SignInForm,
@@ -203,25 +203,6 @@ def delete_business(request, business_id):
         business.delete()
         return redirect("businesses_list")
     return render(request, "growth_app/delete_business.html", {"business": business})
-
-
-@login_required
-def add_sales_data(request, business_id):
-    """Add sales data for a business."""
-    business = get_object_or_404(Business, id=business_id, owner=request.user)
-    if request.method == "POST":
-        form = SalesDataForm(request.POST)
-        if form.is_valid():
-            sales_data = form.save(commit=False)
-            sales_data.business = business
-            sales_data.save()
-            return redirect("business_analytics", business_id=business.id)
-    else:
-        form = SalesDataForm()
-    return render(
-        request, "growth_app/add_sales_data.html", {"form": form, "business": business}
-    )
-
 
 @login_required
 def get_sales_data(request, business_id):
@@ -424,9 +405,10 @@ def upload_csv(request, business_id):
     business = get_object_or_404(Business, id=business_id, owner=request.user)
 
     if request.method == "POST":
-        form = SalesDataForm(request.POST, request.FILES)
+        form = UploadCSVForm(request.POST, request.FILES)
+
         if form.is_valid():
-            csv_file = request.FILES["file"]
+            csv_file = request.FILES["csv_file"]
 
             # Check if file is CSV
             if not csv_file.name.endswith(".csv"):
@@ -486,19 +468,21 @@ def upload_csv(request, business_id):
                     except Exception as e:
                         messages.warning(request, f"Error in row: {row}. {str(e)}")
 
-                messages.success(request, "Sales data imported successfully.")
                 return redirect("business_analytics", business_id=business_id)
 
             except Exception as e:
                 messages.error(request, f"Error processing CSV file: {str(e)}")
                 return redirect("upload_csv", business_id=business_id)
+        else:
+            print("Form errors:", form.errors)
+            print("Non-field errors:", form.non_field_errors())
+
     else:
-        form = SalesDataForm()
+        form = UploadCSVForm()
 
     return render(
         request, "growth_app/upload_csv.html", {"form": form, "business": business}
     )
-
 
 @login_required
 def add_business_csv(request):

@@ -2,4 +2,57 @@
 {% block title %}Upload Sales Data - Growth{% endblock %}
 
 {% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3><i class="fas fa-upload"></i> Upload Sales Data for {{ business.name }}</h3>
+                </div>
+
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-4">
+                            <div class="mb-3">
+                                <label for="id_csv_file" class="form-label">CSV File</label>
+                                <input type="file" name="csv_file" id="id_csv_file" class="form-control" accept=".csv" required>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" name="replace_existing" id="id_replace_existing" class="form-check-input">
+                                <label for="id_replace_existing" class="form-check-label">Replace existing data?</label>
+                            </div>                            
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle"></i> CSV Format</h6>
+                                <p class="mb-2">Your CSV file should have the following format:</p>
+                                <ul>
+                                <li>Column 1: Date (YYYY-MM-DD)</li>
+                                <li>Column 2: Amount (numeric)</li>
+                                </ul>
+                                <p class="mb-0">Example: <code>2023-01-15,1250.50</code></p>
+                            </div>
+                        </div>
+
+                        {% if messages %}
+                        <div class="alert alert-danger">
+                            <ul>
+                            {% for message in messages %}
+                                <li>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-file-upload"></i> Upload CSV Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
