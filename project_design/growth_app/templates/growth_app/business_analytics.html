@@ -11,7 +11,7 @@
 <div class="container py-4">
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="mb-3">{{ business.name }} Analytics</h1>
+            <h1 class="mb-3 fw-bold">{{ business.name }} Analytics</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'businesses_list' %}">Businesses</a></li>
@@ -75,7 +75,7 @@
                         <h5 class="card-title mb-0">Current Year Sales</h5>
                     </div>
                     <div class="card-body">
-                        <div style="height: 300px;">
+                        <div class="height1">
                             <canvas id="currentYearSales"></canvas>
                         </div>
                     </div>
@@ -91,7 +91,7 @@
                         <h5 class="card-title mb-0">Year-over-Year Comparison</h5>
                     </div>
                     <div class="card-body">
-                        <div style="height: 250px;">
+                        <div class="height2">
                             <canvas id="yearComparison"></canvas>
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                         <h5 class="card-title mb-0">Sales by Quarter</h5>
                     </div>
                     <div class="card-body">
-                        <div style="height: 250px;">
+                        <div class="height2">
                             <canvas id="quarterSales"></canvas>
                         </div>
                     </div>
@@ -119,7 +119,7 @@
                         <h5 class="card-title mb-0">Sales Forecast</h5>
                     </div>
                     <div class="card-body">
-                        <div style="height: 300px;">
+                        <div class="height1">
                             <canvas id="salesForecast"></canvas>
                         </div>
                     </div>

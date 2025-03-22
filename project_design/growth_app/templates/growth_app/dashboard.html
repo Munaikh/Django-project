@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="mb-4">Dashboard</h1>
+    <h1 class="mb-4 fw-bold">Dashboard</h1>
     
     <div class="row mb-4 g-3">
         <!-- Summary Cards -->
@@ -103,9 +103,9 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     {% if business.logo %}
-                                                    <img src="{{ business.logo.url }}" alt="{{ business.name }}" class="rounded me-2" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <img src="{{ business.logo.url }}" alt="{{ business.name }}" class="rounded me-2 dashboard-logo">
                                                     {% else %}
-                                                    <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                    <div class="bg-light rounded me-2 d-flex align-items-center justify-content-center dashboard-t">
                                                         <i class="fas fa-building text-secondary"></i>
                                                     </div>
                                                     {% endif %}

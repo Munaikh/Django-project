@@ -3,7 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
     color: #212529;
 }
@@ -103,6 +103,10 @@ main {
     margin-right: 50px;
 }
 
+.about-img {
+    height: 450px; 
+    max-width: 350px;
+}
 
 /* Contact section */
 .contact-div {
@@ -177,4 +181,33 @@ main {
     background-color: inherit;
     border: none;
     padding: 10px;
+}
+
+/* Businesses Sections */
+.business-logo-form {
+    max-height:100px;
+}
+
+.business-logos {
+    height: 200px; 
+    object-fit: cover;
+}
+
+.height1 {
+    height: 300px;
+}
+
+.height2 {
+    height: 250px;
+}
+
+.dashboard-logo {
+    width: 40px; 
+    height: 40px; 
+    object-fit: cover;
+}
+
+.dashboard-t {
+    width: 40px; 
+    height: 40px;
 }

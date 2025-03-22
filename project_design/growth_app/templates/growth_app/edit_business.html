@@ -7,7 +7,7 @@
 <div class="container py-5">
     <div class="row mb-4">
         <div class="col-12">
-            <h1 class="mb-3">Edit Business</h1>
+            <h1 class="mb-3 fw-bold">Edit Business</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'businesses_list' %}">Businesses</a></li>
@@ -74,7 +74,7 @@
                                 <label for="{{ form.logo.id_for_label }}" class="form-label">Business Logo</label>
                                 {% if business.logo %}
                                 <div class="mb-2">
-                                    <img src="{{ business.logo.url }}" alt="{{ business.name }} Logo" class="img-thumbnail" style="max-height: 100px;">
+                                    <img src="{{ business.logo.url }}" alt="{{ business.name }} Logo" class="img-thumbnail business-logo-form">
                                 </div>
                                 {% endif %}
                                 {{ form.logo }}
