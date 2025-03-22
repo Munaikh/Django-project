@@ -17,7 +17,7 @@ urlpatterns = [
     # User dashboard and settings
     path('dashboard/', views.dashboard, name='dashboard'),
     path('settings/', views.user_settings, name='user_settings'),
-    
+    path('upload-csv/', views.upload_csv_general, name='upload_csv_general'),
     # Business management
     path('businesses/', views.businesses_list, name='businesses_list'),
     path('businesses/add/', views.add_business, name='add_business'),
@@ -67,4 +67,5 @@ urlpatterns = [
              template_name='growth_app/password_reset_complete.html'
          ),
          name='password_reset_complete'),
+    path('send-welcome-email/', views.send_welcome_email, name='send_welcome_email'),
 ] 
