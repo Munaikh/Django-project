@@ -362,3 +362,11 @@ class UploadSalesDataTests(TestCase):
         })
         html = response.content.decode("utf-8")
         self.assertInHTML("CSV file must contain Date and Amount columns.", html)
+    
+    def test_upload_sales_data_not_a_csv(self):
+        """Test to check that it rejects file that are not CSVs"""
+        response = self.client.post(reverse("upload_csv", args=[self.business.id]), {
+            "csv_file": self.upload_sales_csv("static/test/not_a_csv.txt"),
+            "replace_existing": True,
+        })
+        self.assertNotEqual(response.status_code, 302)
