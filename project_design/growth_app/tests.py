@@ -270,3 +270,95 @@ class DataAnalyticsTests(TestCase):
         response = self.client.get(reverse("business_analytics", args=[1]))
         html = response.content.decode("utf-8")
         self.assertInHTML("6.6%", html)
+
+class UploadSalesDataTests(TestCase):
+    def upload_sales_csv(self, filename):
+        file_path = os.path.join(settings.BASE_DIR, filename)
+
+        with open(file_path, "rb") as f:
+            file_data = SimpleUploadedFile(
+                name="sample_data.csv",
+                content=f.read(),
+                content_type="text/csv"
+            )
+        
+        return file_data
+
+    def create_business_with_csv(self, filename):
+        self.client.post(reverse("add_business_csv"), {
+            "name": "Les Parisien", 
+            "type": "Service", 
+            "description": "New french restaurant in town", 
+            "owner": self.test_user.id,
+            "csv_file": self.upload_sales_csv(filename),
+            "logo": [""]
+        })
+
+    def setUp(self):
+        self.test_user = User.objects.create_user(
+            username="John_Smith",
+            email="john_smith@example.com",
+            password="password123",
+            first_name="John",
+            last_name="Smith",
+        )
+        self.profile = UserProfile.objects.create(user=self.test_user)
+        self.client.login(username="John_Smith", password="password123")
+        self.business, self.created = Business.objects.get_or_create(
+            name="Las Tapas",
+            owner=self.test_user,
+            defaults={
+                "description": "Cozy spanish restaurant with traditional spanish food.",
+                "type": "Food",
+            }
+        )
+
+    def test_upload_sales_data(self):
+        """Simple test if the sales data upload works on a business with no data"""
+        self.client.post(reverse("upload_csv", args=[self.business.id]), {
+            "csv_file": self.upload_sales_csv("static/test/sample_data.csv"),
+            "replace_existing": False,
+        })
+
+        response = self.client.get(reverse("business_analytics", args=[1]))
+        html = response.content.decode("utf-8")
+        self.assertInHTML("£38394.25", html)
+        self.assertInHTML("£3490.39", html)
+        self.assertInHTML("6.6%", html)
+
+    def test_upload_sales_data_replace(self):
+        """Tests if it's able to replace existing data"""
+        self.create_business_with_csv("static/test/sample_data.csv")
+        self.client.post(reverse("upload_csv", args=[2]), {
+            "csv_file": self.upload_sales_csv("static/test/sample_data.csv"),
+            "replace_existing": True,
+        })
+
+        response = self.client.get(reverse("business_analytics", args=[2]))
+        html = response.content.decode("utf-8")
+        self.assertInHTML("£38394.25", html)
+        self.assertInHTML("£3490.39", html)
+        self.assertInHTML("6.6%", html)
+
+    def test_upload_sales_data_no_replace(self):
+        """Tests if it's able to add sales data to a business that already has some data"""
+        self.create_business_with_csv("static/test/sample_data.csv")
+        self.client.post(reverse("upload_csv", args=[2]), {
+            "csv_file": self.upload_sales_csv("static/test/sample_data.csv"),
+            "replace_existing": False,
+        })
+
+        response = self.client.get(reverse("business_analytics", args=[2]))
+        html = response.content.decode("utf-8")
+        self.assertInHTML("£76788.50", html)
+        self.assertInHTML("£6980.77", html)
+        self.assertInHTML("6.6%", html)
+
+    def test_upload_sales_data_invalid_csv(self):
+        """Test to check that form rejects invalid CSVs"""
+        response = self.client.post(reverse("upload_csv", args=[self.business.id]), {
+            "csv_file": self.upload_sales_csv("static/test/sample_data_invalid.csv"),
+            "replace_existing": True,
+        })
+        html = response.content.decode("utf-8")
+        self.assertInHTML("CSV file must contain Date and Amount columns.", html)

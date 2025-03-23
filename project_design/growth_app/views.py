@@ -413,7 +413,7 @@ def upload_csv(request, business_id):
             # Check if file is CSV
             if not csv_file.name.endswith(".csv"):
                 messages.error(request, "Please upload a CSV file.")
-                return redirect("upload_csv", business_id=business_id)
+                return render(request, "growth_app/upload_csv.html", {"form": form, "business": business},)
 
             # Process CSV file
             try:
@@ -426,7 +426,7 @@ def upload_csv(request, business_id):
                     messages.error(
                         request, "CSV file must contain Date and Amount columns."
                     )
-                    return redirect("upload_csv", business_id=business_id)
+                    return render(request, "growth_app/upload_csv.html", {"form": form, "business": business},)
 
                 # Delete existing data if replace option is selected
                 if form.cleaned_data.get("replace_existing"):
