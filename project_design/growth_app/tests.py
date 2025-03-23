@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from growth_app.models import Business, UserProfile
-from population_script import populate
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout, update_session_auth_hash
 
@@ -168,10 +167,65 @@ class AuthenticationTests(TestCase):
             User.objects.get(username="John_Smith")
 
 class BusinessMethodTests(TestCase):
-    def test_name_not_empty(self):
-        """
-        Ensures correct initalization of Business model
-        """
-        business = Business(name="Amazon")
+    """Setup creates a user named John and he's business Las Tapas"""
+    def setUp(self):
+        self.test_user = User.objects.create_user(
+            username="John_Smith",
+            email="john_smith@example.com",
+            password="password123",
+            first_name="John",
+            last_name="Smith",
+        )
+        self.profile = UserProfile.objects.create(user=self.test_user)
+        self.business, self.created = Business.objects.get_or_create(
+            name="Las Tapas",
+            owner=self.test_user,
+            defaults={
+                'description': "Cozy spanish restaurant with traditional spanish food.",
+                'type': "Food",
+            }
+        )
+    
+    def test_create_business(self):
+        """Tests that the restaurant has been correctly created"""
+        self.assertTrue(self.created)
+        self.assertEqual((self.business.name == "Las Tapas"), True)
+        self.assertEqual((self.business.description == "Cozy spanish restaurant with traditional spanish food."), True)
+        self.assertEqual((self.business.type == "Food"), True)
+    
+    def test_edit_business(self):
+        """Logs in with John's account and tries to rename the business"""
+        self.client.login(username="John_Smith", password="password123")
+        self.client.post(reverse("edit_business", args=[self.business.id]), {
+            'name': ['Les Parisien'], 
+            'type': ['Service'], 
+            'description': ['New french restaurant in town'], 
+            'logo': ['']
+        })
 
-        self.assertEqual((business.name == "Amazon"), True)
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.name, 'Les Parisien')
+        self.assertEqual(self.business.type, 'Service')
+        self.assertEqual(self.business.description, 'New french restaurant in town')
+    
+    def test_edit_business_no_login(self):
+        """Tries to edit John's business without being login as John"""
+        self.client.post(reverse("edit_business", args=[self.business.id]), {
+            'name': ['Les Parisien'], 
+            'type': ['Service'], 
+            'description': ['New french restaurant in town'], 
+            'logo': ['']
+        })
+
+        self.business.refresh_from_db()
+        self.assertEqual(self.business.name, 'Las Tapas')
+        self.assertEqual(self.business.type, 'Food')
+        self.assertEqual(self.business.description, 'Cozy spanish restaurant with traditional spanish food.')
+
+    def test_delete_business(self):
+        """Logs in with John's account and deletes his Tapas' business"""
+        self.client.login(username="John_Smith", password="password123")
+        self.client.post(reverse("delete_business", args=[self.business.id]), {})
+
+        with self.assertRaises(Business.DoesNotExist):
+            Business.objects.get(pk=self.business.pk)
