@@ -1,8 +1,6 @@
 # Django and related packages
 Django>=5.1.7
-django-bootstrap5>=21.3
 numpy>=2.2.3
 pandas>=2.2.3
 scikit-learn>=1.6.1
 pillow>=11.1.0
-python-dotenv>=0.19.2
