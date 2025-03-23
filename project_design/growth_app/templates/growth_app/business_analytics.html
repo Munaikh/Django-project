@@ -272,18 +272,4 @@
     });
 </script>
 {% endif %}
-
-<script>
-    // Show footer only when scrolling
-    window.addEventListener('scroll', function() {
-        const footer = document.getElementById('scroll-footer');
-        if (window.scrollY > 300) {
-            footer.classList.remove('d-none');
-            footer.classList.add('fixed-bottom');
-        } else {
-            footer.classList.add('d-none');
-            footer.classList.remove('fixed-bottom');
-        }
-    });
-</script>
 {% endblock %} 
