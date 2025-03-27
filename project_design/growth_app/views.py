@@ -549,15 +549,6 @@ def add_business_csv(request):
                 # Bulk create all valid sales data objects
                 if sales_data_objects:
                     SalesData.objects.bulk_create(sales_data_objects)
-                    messages.success(
-                        request,
-                        f"Business created with {len(sales_data_objects)} sales records.",
-                    )
-                else:
-                    messages.warning(
-                        request,
-                        "Business created, but no valid sales data found in the CSV file.",
-                    )
 
             except Exception as e:
                 messages.error(request, f"Error processing CSV file: {str(e)}")
